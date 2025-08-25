@@ -18,6 +18,7 @@ export type ChatCommand =
   | APIDeleteStorage
   | APIGetChats
   | APIGetChat
+  | APIConnectPlan
   | APISendMessage
   | APIUpdateChatItem
   | APIDeleteChatItem
@@ -116,6 +117,7 @@ type ChatCommandTag =
   | "apiDeleteStorage"
   | "apiGetChats"
   | "apiGetChat"
+  | "apiConnectPlan"
   | "apiSendMessage"
   | "apiUpdateChatItem"
   | "apiDeleteChatItem"
@@ -269,6 +271,12 @@ export interface APIGetChat extends IChatCommand {
   chatId: number
   pagination: ChatPagination
   search?: string
+}
+
+export interface APIConnectPlan extends IChatCommand {
+  type: "apiConnectPlan"
+  userId: number
+  link: string
 }
 
 export interface APISendMessage extends IChatCommand {
@@ -701,6 +709,8 @@ export function cmdString(cmd: ChatCommand): string {
       return `/_get chats pcc=${onOff(cmd.pendingConnections)}`
     case "apiGetChat":
       return `/_get chat ${cmd.chatType}${cmd.chatId}${paginationStr(cmd.pagination)}`
+    case "apiConnectPlan":
+      return `/_connect plan ${cmd.userId} ${cmd.link}`
     case "apiSendMessage":
       return `/_send ${cmd.chatType}${cmd.chatId} json ${JSON.stringify(cmd.messages)}`
     case "apiUpdateChatItem":

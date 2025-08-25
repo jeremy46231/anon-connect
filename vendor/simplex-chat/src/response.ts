@@ -8,6 +8,7 @@ export type ChatResponse =
   | CRChatStopped
   | CRApiChats
   | CRApiChat
+  | CRConnectionPlan
   | CRApiParsedMarkdown
   | CRUserProtoServers
   | CRContactInfo
@@ -104,6 +105,7 @@ type ChatResponseTag =
   | "chatStopped"
   | "apiChats"
   | "apiChat"
+  | "connectionPlan"
   | "apiParsedMarkdown"
   | "userProtoServers"
   | "contactInfo"
@@ -190,6 +192,61 @@ type ChatResponseTag =
 
 interface CR {
   type: ChatResponseTag
+}
+
+export interface CRConnectionPlan extends CR {
+  type: "connectionPlan"
+  user: User
+  connLink: CreatedConnLink
+  connectionPlan: ConnectionPlan
+}
+
+export type ConnectionPlan = InvitationLinkPlan | ContactAddressPlan | GroupLinkPlan | ErrorPlan
+
+interface InvitationLinkPlan {
+  type: "invitationLink"
+  invitationLinkPlan: InvitationPlanVariant
+}
+
+type InvitationPlanVariant =
+  | {type: "ok"; contactSLinkData_: {profile: Profile; message: MsgContent; business: boolean}}
+  | {type: "ownLink"}
+  | {type: "connecting"; contact_: Contact}
+  | {type: "known"; contact: Contact}
+
+interface ContactAddressPlan {
+  type: "contactAddress"
+  contactAddressPlan: ContactAddressPlanVariant
+}
+
+type ContactAddressPlanVariant =
+  | {type: "ok"; contactSLinkData_: {profile: Profile; message: MsgContent; business: boolean}}
+  | {type: "ownLink"}
+  | {type: "connectingConfirmReconnect"}
+  | {type: "connectingProhibit"; contact: Contact}
+  | {type: "known"; contact: Contact}
+  | {type: "contactViaAddress"; contact: Contact}
+
+interface GroupLinkPlan {
+  type: "groupLink"
+  groupLinkPlan: GroupLinkPlanVariant
+}
+
+type GroupLinkPlanVariant =
+  | {type: "ok"; groupSLinkData_?: GroupShortLinkData}
+  | {type: "ownLink"; groupInfo: GroupInfo}
+  | {type: "connectingConfirmReconnect"}
+  | {type: "connectingProhibit"; groupInfo_?: GroupInfo}
+  | {type: "known"; groupInfo: GroupInfo}
+
+interface ErrorPlan {
+  type: "error"
+  chatError: ChatError
+}
+
+interface GroupShortLinkData {
+  // structure documented in docs/TYPES.md; fields not used by client code here
+  [x: string]: any
 }
 
 export interface CRActiveUser extends CR {

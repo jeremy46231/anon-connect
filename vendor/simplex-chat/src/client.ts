@@ -167,6 +167,12 @@ export class ChatClient {
     throw new ChatCommandError("unexpected response", r)
   }
 
+  async apiConnectPlan(userId: number, link: string): Promise<CR.CRConnectionPlan> {
+    const r = await this.sendChatCommand({type: "apiConnectPlan", userId, link})
+    if (r.type === "connectionPlan") return r
+    throw new ChatCommandError("unexpected response in connect plan", r)
+  }
+
   async apiSendTextMessage(chatType: ChatType, chatId: number, text: string): Promise<CR.AChatItem[]> {
     return this.apiSendMessages(chatType, chatId, [{msgContent: {type: "text", text}}])
   }

@@ -1,6 +1,5 @@
 {
   "scripts": {
-    "build-simplex": "BUILD_SIMPLEX=1 bun run scripts/simplex.ts",
     "simplex": "simplex-chat -d ./simplex/database/db -p 5225 -y --create-bot-display-name Anon"
   },
   "dependencies": {

@@ -9,7 +9,6 @@ import {
   type Contact,
   ChatError,
 } from 'simplex-chat/src/response'
-import { connectPlanResponse } from './types'
 
 const simplex = await ChatClient.create('ws://localhost:5225')
 const user = await simplex.apiGetActiveUser()
@@ -33,20 +32,6 @@ function couldBeIncognito(profile: Profile) {
   return true
 }
 
-async function connectPlan(
-  link: string,
-  userId = user!.userId,
-  chat = simplex
-) {
-  const res = (await chat.sendChatCmdStr(
-    `/_connect plan ${userId} ${link}`
-  )) as connectPlanResponse
-  if (res.type === 'connectionPlan') {
-    return res
-  }
-  console.error(res)
-  throw new Error('unexpected response in connect plan')
-}
 
 async function handleChatResponse(response: ChatResponse, chat = simplex) {
   switch (response.type) {
@@ -66,7 +51,7 @@ async function handleChatResponse(response: ChatResponse, chat = simplex) {
       let workingProfileLink = false
       if (profileLink) {
         try {
-          const plan = await connectPlan(profileLink)
+          const plan = await chat.apiConnectPlan(user!.userId, profileLink)
           if (plan.connectionPlan.type === 'contactAddress') {
             workingProfileLink = true
             messages.push(
@@ -126,7 +111,7 @@ async function handleChatResponse(response: ChatResponse, chat = simplex) {
           if (link) {
             // const res = await chat.apiConnect(link)
             // console.log('connected', res)
-            const plan = await connectPlan(link)
+            const plan = await chat.apiConnectPlan(user!.userId, link)
             if (plan.connectionPlan.type !== 'contactAddress' && plan.connectionPlan.type !== 'invitationLink') {
               let errorText = 'This is an invalid link type.'
               if (plan.connectionPlan.type === 'groupLink') {

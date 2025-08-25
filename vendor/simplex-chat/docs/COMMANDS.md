@@ -3,6 +3,7 @@
 This file is generated automatically.
 
 [Address commands](#address-commands)
+
 - [APICreateMyAddress](#apicreatemyaddress)
 - [APIDeleteMyAddress](#apideletemyaddress)
 - [APIShowMyAddress](#apishowmyaddress)
@@ -10,6 +11,7 @@ This file is generated automatically.
 - [APISetAddressSettings](#apisetaddresssettings)
 
 [Message commands](#message-commands)
+
 - [APISendMessages](#apisendmessages)
 - [APIUpdateChatItem](#apiupdatechatitem)
 - [APIDeleteChatItem](#apideletechatitem)
@@ -17,10 +19,12 @@ This file is generated automatically.
 - [APIChatItemReaction](#apichatitemreaction)
 
 [File commands](#file-commands)
+
 - [ReceiveFile](#receivefile)
 - [CancelFile](#cancelfile)
 
 [Group commands](#group-commands)
+
 - [APIAddMember](#apiaddmember)
 - [APIJoinGroup](#apijoingroup)
 - [APIAcceptMember](#apiacceptmember)
@@ -33,12 +37,14 @@ This file is generated automatically.
 - [APIUpdateGroupProfile](#apiupdategroupprofile)
 
 [Group link commands](#group-link-commands)
+
 - [APICreateGroupLink](#apicreategrouplink)
 - [APIGroupLinkMemberRole](#apigrouplinkmemberrole)
 - [APIDeleteGroupLink](#apideletegrouplink)
 - [APIGetGroupLink](#apigetgrouplink)
 
 [Connection commands](#connection-commands)
+
 - [APIAddContact](#apiaddcontact)
 - [APIConnectPlan](#apiconnectplan)
 - [APIConnect](#apiconnect)
@@ -46,11 +52,13 @@ This file is generated automatically.
 - [APIRejectContact](#apirejectcontact)
 
 [Chat commands](#chat-commands)
+
 - [APIListContacts](#apilistcontacts)
 - [APIListGroups](#apilistgroups)
 - [APIDeleteChat](#apideletechat)
 
 [User profile commands](#user-profile-commands)
+
 - [ShowActiveUser](#showactiveuser)
 - [CreateActiveUser](#createactiveuser)
 - [ListUsers](#listusers)
@@ -61,19 +69,18 @@ This file is generated automatically.
 
 ---
 
-
 ## Address commands
 
 Bots can use these commands to automatically check and create address when initialized
-
 
 ### APICreateMyAddress
 
 Create bot address.
 
-*Network usage*: interactive.
+_Network usage_: interactive.
 
 **Parameters**:
+
 - userId: int64
 
 **Syntax**:
@@ -83,7 +90,7 @@ Create bot address.
 ```
 
 ```javascript
-'/_address ' + userId // JavaScript
+"/_address " + userId // JavaScript
 ```
 
 ```python
@@ -93,20 +100,21 @@ Create bot address.
 **Response**:
 
 UserContactLinkCreated: User contact address created.
+
 - type: "userContactLinkCreated"
 - user: [User](./TYPES.md#user)
 - connLinkContact: [CreatedConnLink](./TYPES.md#createdconnlink)
 
 ---
 
-
 ### APIDeleteMyAddress
 
 Delete bot address.
 
-*Network usage*: background.
+_Network usage_: background.
 
 **Parameters**:
+
 - userId: int64
 
 **Syntax**:
@@ -116,7 +124,7 @@ Delete bot address.
 ```
 
 ```javascript
-'/_delete_address ' + userId // JavaScript
+"/_delete_address " + userId // JavaScript
 ```
 
 ```python
@@ -126,19 +134,20 @@ Delete bot address.
 **Response**:
 
 UserContactLinkDeleted: User contact address deleted.
+
 - type: "userContactLinkDeleted"
 - user: [User](./TYPES.md#user)
 
 ---
 
-
 ### APIShowMyAddress
 
 Get bot address and settings.
 
-*Network usage*: no.
+_Network usage_: no.
 
 **Parameters**:
+
 - userId: int64
 
 **Syntax**:
@@ -148,7 +157,7 @@ Get bot address and settings.
 ```
 
 ```javascript
-'/_show_address ' + userId // JavaScript
+"/_show_address " + userId // JavaScript
 ```
 
 ```python
@@ -158,20 +167,21 @@ Get bot address and settings.
 **Response**:
 
 UserContactLink: User contact address.
+
 - type: "userContactLink"
 - user: [User](./TYPES.md#user)
 - contactLink: [UserContactLink](./TYPES.md#usercontactlink)
 
 ---
 
-
 ### APISetProfileAddress
 
 Add address to bot profile.
 
-*Network usage*: interactive.
+_Network usage_: interactive.
 
 **Parameters**:
+
 - userId: int64
 - enable: bool
 
@@ -182,7 +192,7 @@ Add address to bot profile.
 ```
 
 ```javascript
-'/_profile_address ' + userId + ' ' + (enable ? 'on' : 'off') // JavaScript
+"/_profile_address " + userId + " " + (enable ? "on" : "off") // JavaScript
 ```
 
 ```python
@@ -192,6 +202,7 @@ Add address to bot profile.
 **Response**:
 
 UserProfileUpdated: User profile updated.
+
 - type: "userProfileUpdated"
 - user: [User](./TYPES.md#user)
 - fromProfile: [Profile](./TYPES.md#profile)
@@ -200,14 +211,14 @@ UserProfileUpdated: User profile updated.
 
 ---
 
-
 ### APISetAddressSettings
 
 Set bot address settings.
 
-*Network usage*: interactive.
+_Network usage_: interactive.
 
 **Parameters**:
+
 - userId: int64
 - settings: [AddressSettings](./TYPES.md#addresssettings)
 
@@ -218,7 +229,7 @@ Set bot address settings.
 ```
 
 ```javascript
-'/_address_settings ' + userId + ' ' + JSON.stringify(settings) // JavaScript
+"/_address_settings " + userId + " " + JSON.stringify(settings) // JavaScript
 ```
 
 ```python
@@ -228,25 +239,25 @@ Set bot address settings.
 **Response**:
 
 UserContactLinkUpdated: User contact address updated.
+
 - type: "userContactLinkUpdated"
 - user: [User](./TYPES.md#user)
 - contactLink: [UserContactLink](./TYPES.md#usercontactlink)
 
 ---
 
-
 ## Message commands
 
 Commands to send, update, delete, moderate messages and set message reactions
-
 
 ### APISendMessages
 
 Send messages.
 
-*Network usage*: background.
+_Network usage_: background.
 
 **Parameters**:
+
 - sendRef: [ChatRef](./TYPES.md#chatref)
 - liveMessage: bool
 - ttl: int?
@@ -259,7 +270,7 @@ Send messages.
 ```
 
 ```javascript
-'/_send ' + sendRef.toString() + (liveMessage ? ' live=on' : '') + (ttl ? ' ttl=' + ttl : '') + ' json ' + JSON.stringify(composedMessages) // JavaScript
+"/_send " + sendRef.toString() + (liveMessage ? " live=on" : "") + (ttl ? " ttl=" + ttl : "") + " json " + JSON.stringify(composedMessages) // JavaScript
 ```
 
 ```python
@@ -269,20 +280,21 @@ Send messages.
 **Response**:
 
 NewChatItems: New messages.
+
 - type: "newChatItems"
 - user: [User](./TYPES.md#user)
 - chatItems: [[AChatItem](./TYPES.md#achatitem)]
 
 ---
 
-
 ### APIUpdateChatItem
 
 Update message.
 
-*Network usage*: background.
+_Network usage_: background.
 
 **Parameters**:
+
 - chatRef: [ChatRef](./TYPES.md#chatref)
 - chatItemId: int64
 - liveMessage: bool
@@ -295,7 +307,7 @@ Update message.
 ```
 
 ```javascript
-'/_update item ' + chatRef.toString() + ' ' + chatItemId + (liveMessage ? ' live=on' : '') + ' json ' + JSON.stringify(updatedMessage) // JavaScript
+"/_update item " + chatRef.toString() + " " + chatItemId + (liveMessage ? " live=on" : "") + " json " + JSON.stringify(updatedMessage) // JavaScript
 ```
 
 ```python
@@ -305,32 +317,36 @@ Update message.
 **Responses**:
 
 ChatItemUpdated: Message updated.
+
 - type: "chatItemUpdated"
 - user: [User](./TYPES.md#user)
 - chatItem: [AChatItem](./TYPES.md#achatitem)
 
 ChatItemNotChanged: Message not changed.
+
 - type: "chatItemNotChanged"
 - user: [User](./TYPES.md#user)
 - chatItem: [AChatItem](./TYPES.md#achatitem)
 
 ChatCmdError: Command error.
+
 - type: "chatCmdError"
 - chatError: [ChatError](./TYPES.md#chaterror)
 
 **Errors**:
+
 - InvalidChatItemUpdate: Not user's message or cannot be edited.
 
 ---
-
 
 ### APIDeleteChatItem
 
 Delete message.
 
-*Network usage*: background.
+_Network usage_: background.
 
 **Parameters**:
+
 - chatRef: [ChatRef](./TYPES.md#chatref)
 - chatItemIds: [int64]
 - deleteMode: [CIDeleteMode](./TYPES.md#cideletemode)
@@ -342,7 +358,7 @@ Delete message.
 ```
 
 ```javascript
-'/_delete item ' + chatRef.toString() + ' ' + chatItemIds.join(',') + ' ' + deleteMode // JavaScript
+"/_delete item " + chatRef.toString() + " " + chatItemIds.join(",") + " " + deleteMode // JavaScript
 ```
 
 ```python
@@ -352,6 +368,7 @@ Delete message.
 **Response**:
 
 ChatItemsDeleted: Messages deleted.
+
 - type: "chatItemsDeleted"
 - user: [User](./TYPES.md#user)
 - chatItemDeletions: [[ChatItemDeletion](./TYPES.md#chatitemdeletion)]
@@ -360,14 +377,14 @@ ChatItemsDeleted: Messages deleted.
 
 ---
 
-
 ### APIDeleteMemberChatItem
 
 Moderate message. Requires Moderator role (and higher than message author's).
 
-*Network usage*: background.
+_Network usage_: background.
 
 **Parameters**:
+
 - groupId: int64
 - chatItemIds: [int64]
 
@@ -378,7 +395,7 @@ Moderate message. Requires Moderator role (and higher than message author's).
 ```
 
 ```javascript
-'/_delete member item #' + groupId + ' ' + chatItemIds.join(',') // JavaScript
+"/_delete member item #" + groupId + " " + chatItemIds.join(",") // JavaScript
 ```
 
 ```python
@@ -388,6 +405,7 @@ Moderate message. Requires Moderator role (and higher than message author's).
 **Response**:
 
 ChatItemsDeleted: Messages deleted.
+
 - type: "chatItemsDeleted"
 - user: [User](./TYPES.md#user)
 - chatItemDeletions: [[ChatItemDeletion](./TYPES.md#chatitemdeletion)]
@@ -396,14 +414,14 @@ ChatItemsDeleted: Messages deleted.
 
 ---
 
-
 ### APIChatItemReaction
 
 Add/remove message reaction.
 
-*Network usage*: background.
+_Network usage_: background.
 
 **Parameters**:
+
 - chatRef: [ChatRef](./TYPES.md#chatref)
 - chatItemId: int64
 - add: bool
@@ -416,7 +434,7 @@ Add/remove message reaction.
 ```
 
 ```javascript
-'/_reaction ' + chatRef.toString() + ' ' + chatItemId + ' ' + (add ? 'on' : 'off') + ' ' + JSON.stringify(reaction) // JavaScript
+"/_reaction " + chatRef.toString() + " " + chatItemId + " " + (add ? "on" : "off") + " " + JSON.stringify(reaction) // JavaScript
 ```
 
 ```python
@@ -426,6 +444,7 @@ Add/remove message reaction.
 **Response**:
 
 ChatItemReaction: Message reaction.
+
 - type: "chatItemReaction"
 - user: [User](./TYPES.md#user)
 - added: bool
@@ -433,19 +452,18 @@ ChatItemReaction: Message reaction.
 
 ---
 
-
 ## File commands
 
 Commands to receive and to cancel files. Files are sent as part of the message, there are no separate commands to send files.
-
 
 ### ReceiveFile
 
 Receive file.
 
-*Network usage*: no.
+_Network usage_: no.
 
 **Parameters**:
+
 - fileId: int64
 - userApprovedRelays: bool
 - storeEncrypted: bool?
@@ -459,7 +477,12 @@ Receive file.
 ```
 
 ```javascript
-'/freceive ' + fileId + (userApprovedRelays ? ' approved_relays=on' : '') + (typeof storeEncrypted == 'boolean' ? ' encrypt=' + (storeEncrypted ? 'on' : 'off') : '') + (typeof fileInline == 'boolean' ? ' inline=' + (fileInline ? 'on' : 'off') : '') + (filePath ? ' ' + filePath : '') // JavaScript
+"/freceive " +
+  fileId +
+  (userApprovedRelays ? " approved_relays=on" : "") +
+  (typeof storeEncrypted == "boolean" ? " encrypt=" + (storeEncrypted ? "on" : "off") : "") +
+  (typeof fileInline == "boolean" ? " inline=" + (fileInline ? "on" : "off") : "") +
+  (filePath ? " " + filePath : "") // JavaScript
 ```
 
 ```python
@@ -469,25 +492,27 @@ Receive file.
 **Responses**:
 
 RcvFileAccepted: File accepted to be received.
+
 - type: "rcvFileAccepted"
 - user: [User](./TYPES.md#user)
 - chatItem: [AChatItem](./TYPES.md#achatitem)
 
 RcvFileAcceptedSndCancelled: File accepted, but no longer sent.
+
 - type: "rcvFileAcceptedSndCancelled"
 - user: [User](./TYPES.md#user)
 - rcvFileTransfer: [RcvFileTransfer](./TYPES.md#rcvfiletransfer)
 
 ---
 
-
 ### CancelFile
 
 Cancel file.
 
-*Network usage*: background.
+_Network usage_: background.
 
 **Parameters**:
+
 - fileId: int64
 
 **Syntax**:
@@ -497,7 +522,7 @@ Cancel file.
 ```
 
 ```javascript
-'/fcancel ' + fileId // JavaScript
+"/fcancel " + fileId // JavaScript
 ```
 
 ```python
@@ -507,40 +532,43 @@ Cancel file.
 **Responses**:
 
 SndFileCancelled: Cancelled sending file.
+
 - type: "sndFileCancelled"
 - user: [User](./TYPES.md#user)
-- chatItem_: [AChatItem](./TYPES.md#achatitem)?
+- chatItem\_: [AChatItem](./TYPES.md#achatitem)?
 - fileTransferMeta: [FileTransferMeta](./TYPES.md#filetransfermeta)
 - sndFileTransfers: [[SndFileTransfer](./TYPES.md#sndfiletransfer)]
 
 RcvFileCancelled: Cancelled receiving file.
+
 - type: "rcvFileCancelled"
 - user: [User](./TYPES.md#user)
-- chatItem_: [AChatItem](./TYPES.md#achatitem)?
+- chatItem\_: [AChatItem](./TYPES.md#achatitem)?
 - rcvFileTransfer: [RcvFileTransfer](./TYPES.md#rcvfiletransfer)
 
 ChatCmdError: Command error.
+
 - type: "chatCmdError"
 - chatError: [ChatError](./TYPES.md#chaterror)
 
 **Errors**:
+
 - FileCancel: Cannot cancel file.
 
 ---
-
 
 ## Group commands
 
 Commands to manage and moderate groups. These commands can be used with business chats as well - they are groups. E.g., a common scenario would be to add human agents to business chat with the customer who connected via business address.
 
-
 ### APIAddMember
 
 Add contact to group. Requires bot to have Admin role.
 
-*Network usage*: interactive.
+_Network usage_: interactive.
 
 **Parameters**:
+
 - groupId: int64
 - contactId: int64
 - memberRole: [GroupMemberRole](./TYPES.md#groupmemberrole)
@@ -552,7 +580,7 @@ Add contact to group. Requires bot to have Admin role.
 ```
 
 ```javascript
-'/_add #' + groupId + ' ' + contactId + ' ' + memberRole // JavaScript
+"/_add #" + groupId + " " + contactId + " " + memberRole // JavaScript
 ```
 
 ```python
@@ -562,6 +590,7 @@ Add contact to group. Requires bot to have Admin role.
 **Response**:
 
 SentGroupInvitation: Group invitation sent.
+
 - type: "sentGroupInvitation"
 - user: [User](./TYPES.md#user)
 - groupInfo: [GroupInfo](./TYPES.md#groupinfo)
@@ -570,14 +599,14 @@ SentGroupInvitation: Group invitation sent.
 
 ---
 
-
 ### APIJoinGroup
 
 Join group.
 
-*Network usage*: interactive.
+_Network usage_: interactive.
 
 **Parameters**:
+
 - groupId: int64
 
 **Syntax**:
@@ -587,7 +616,7 @@ Join group.
 ```
 
 ```javascript
-'/_join #' + groupId // JavaScript
+"/_join #" + groupId // JavaScript
 ```
 
 ```python
@@ -597,6 +626,7 @@ Join group.
 **Response**:
 
 UserAcceptedGroupSent: User accepted group invitation.
+
 - type: "userAcceptedGroupSent"
 - user: [User](./TYPES.md#user)
 - groupInfo: [GroupInfo](./TYPES.md#groupinfo)
@@ -604,14 +634,14 @@ UserAcceptedGroupSent: User accepted group invitation.
 
 ---
 
-
 ### APIAcceptMember
 
 Accept group member. Requires Admin role.
 
-*Network usage*: background.
+_Network usage_: background.
 
 **Parameters**:
+
 - groupId: int64
 - groupMemberId: int64
 - memberRole: [GroupMemberRole](./TYPES.md#groupmemberrole)
@@ -623,7 +653,7 @@ Accept group member. Requires Admin role.
 ```
 
 ```javascript
-'/_accept member #' + groupId + ' ' + groupMemberId + ' ' + memberRole // JavaScript
+"/_accept member #" + groupId + " " + groupMemberId + " " + memberRole // JavaScript
 ```
 
 ```python
@@ -633,28 +663,31 @@ Accept group member. Requires Admin role.
 **Responses**:
 
 MemberAccepted: Member accepted to group.
+
 - type: "memberAccepted"
 - user: [User](./TYPES.md#user)
 - groupInfo: [GroupInfo](./TYPES.md#groupinfo)
 - member: [GroupMember](./TYPES.md#groupmember)
 
 ChatCmdError: Command error.
+
 - type: "chatCmdError"
 - chatError: [ChatError](./TYPES.md#chaterror)
 
 **Errors**:
+
 - GroupMemberNotActive: Member is not connected yet.
 
 ---
-
 
 ### APIMembersRole
 
 Set members role. Requires Admin role.
 
-*Network usage*: background.
+_Network usage_: background.
 
 **Parameters**:
+
 - groupId: int64
 - groupMemberIds: [int64]
 - memberRole: [GroupMemberRole](./TYPES.md#groupmemberrole)
@@ -666,7 +699,7 @@ Set members role. Requires Admin role.
 ```
 
 ```javascript
-'/_member role #' + groupId + ' ' + groupMemberIds.join(',') + ' ' + memberRole // JavaScript
+"/_member role #" + groupId + " " + groupMemberIds.join(",") + " " + memberRole // JavaScript
 ```
 
 ```python
@@ -676,6 +709,7 @@ Set members role. Requires Admin role.
 **Response**:
 
 MembersRoleUser: Members role changed by user.
+
 - type: "membersRoleUser"
 - user: [User](./TYPES.md#user)
 - groupInfo: [GroupInfo](./TYPES.md#groupinfo)
@@ -684,14 +718,14 @@ MembersRoleUser: Members role changed by user.
 
 ---
 
-
 ### APIBlockMembersForAll
 
 Block members. Requires Moderator role.
 
-*Network usage*: background.
+_Network usage_: background.
 
 **Parameters**:
+
 - groupId: int64
 - groupMemberIds: [int64]
 - blocked: bool
@@ -703,7 +737,7 @@ Block members. Requires Moderator role.
 ```
 
 ```javascript
-'/_block #' + groupId + ' ' + groupMemberIds.join(',') + ' blocked=' + (blocked ? 'on' : 'off') // JavaScript
+"/_block #" + groupId + " " + groupMemberIds.join(",") + " blocked=" + (blocked ? "on" : "off") // JavaScript
 ```
 
 ```python
@@ -713,6 +747,7 @@ Block members. Requires Moderator role.
 **Response**:
 
 MembersBlockedForAllUser: Members blocked for all by admin.
+
 - type: "membersBlockedForAllUser"
 - user: [User](./TYPES.md#user)
 - groupInfo: [GroupInfo](./TYPES.md#groupinfo)
@@ -721,14 +756,14 @@ MembersBlockedForAllUser: Members blocked for all by admin.
 
 ---
 
-
 ### APIRemoveMembers
 
 Remove members. Requires Admin role.
 
-*Network usage*: background.
+_Network usage_: background.
 
 **Parameters**:
+
 - groupId: int64
 - groupMemberIds: [int64]
 - withMessages: bool
@@ -740,7 +775,7 @@ Remove members. Requires Admin role.
 ```
 
 ```javascript
-'/_remove #' + groupId + ' ' + groupMemberIds.join(',') + (withMessages ? ' messages=on' : '') // JavaScript
+"/_remove #" + groupId + " " + groupMemberIds.join(",") + (withMessages ? " messages=on" : "") // JavaScript
 ```
 
 ```python
@@ -750,6 +785,7 @@ Remove members. Requires Admin role.
 **Responses**:
 
 UserDeletedMembers: Members deleted.
+
 - type: "userDeletedMembers"
 - user: [User](./TYPES.md#user)
 - groupInfo: [GroupInfo](./TYPES.md#groupinfo)
@@ -757,22 +793,24 @@ UserDeletedMembers: Members deleted.
 - withMessages: bool
 
 ChatCmdError: Command error.
+
 - type: "chatCmdError"
 - chatError: [ChatError](./TYPES.md#chaterror)
 
 **Errors**:
+
 - GroupMemberNotFound: Group member not found.
 
 ---
-
 
 ### APILeaveGroup
 
 Leave group.
 
-*Network usage*: background.
+_Network usage_: background.
 
 **Parameters**:
+
 - groupId: int64
 
 **Syntax**:
@@ -782,7 +820,7 @@ Leave group.
 ```
 
 ```javascript
-'/_leave #' + groupId // JavaScript
+"/_leave #" + groupId // JavaScript
 ```
 
 ```python
@@ -792,20 +830,21 @@ Leave group.
 **Response**:
 
 LeftMemberUser: User left group.
+
 - type: "leftMemberUser"
 - user: [User](./TYPES.md#user)
 - groupInfo: [GroupInfo](./TYPES.md#groupinfo)
 
 ---
 
-
 ### APIListMembers
 
 Get group members.
 
-*Network usage*: no.
+_Network usage_: no.
 
 **Parameters**:
+
 - groupId: int64
 
 **Syntax**:
@@ -815,7 +854,7 @@ Get group members.
 ```
 
 ```javascript
-'/_members #' + groupId // JavaScript
+"/_members #" + groupId // JavaScript
 ```
 
 ```python
@@ -825,20 +864,21 @@ Get group members.
 **Response**:
 
 GroupMembers: Group members.
+
 - type: "groupMembers"
 - user: [User](./TYPES.md#user)
 - group: [Group](./TYPES.md#group)
 
 ---
 
-
 ### APINewGroup
 
 Create group.
 
-*Network usage*: no.
+_Network usage_: no.
 
 **Parameters**:
+
 - userId: int64
 - incognito: bool
 - groupProfile: [GroupProfile](./TYPES.md#groupprofile)
@@ -850,7 +890,7 @@ Create group.
 ```
 
 ```javascript
-'/_group ' + userId + (incognito ? ' incognito=on' : '') + ' ' + JSON.stringify(groupProfile) // JavaScript
+"/_group " + userId + (incognito ? " incognito=on" : "") + " " + JSON.stringify(groupProfile) // JavaScript
 ```
 
 ```python
@@ -860,20 +900,21 @@ Create group.
 **Response**:
 
 GroupCreated: Group created.
+
 - type: "groupCreated"
 - user: [User](./TYPES.md#user)
 - groupInfo: [GroupInfo](./TYPES.md#groupinfo)
 
 ---
 
-
 ### APIUpdateGroupProfile
 
 Update group profile.
 
-*Network usage*: background.
+_Network usage_: background.
 
 **Parameters**:
+
 - groupId: int64
 - groupProfile: [GroupProfile](./TYPES.md#groupprofile)
 
@@ -884,7 +925,7 @@ Update group profile.
 ```
 
 ```javascript
-'/_group_profile #' + groupId + ' ' + JSON.stringify(groupProfile) // JavaScript
+"/_group_profile #" + groupId + " " + JSON.stringify(groupProfile) // JavaScript
 ```
 
 ```python
@@ -894,27 +935,27 @@ Update group profile.
 **Response**:
 
 GroupUpdated: Group updated.
+
 - type: "groupUpdated"
 - user: [User](./TYPES.md#user)
 - fromGroup: [GroupInfo](./TYPES.md#groupinfo)
 - toGroup: [GroupInfo](./TYPES.md#groupinfo)
-- member_: [GroupMember](./TYPES.md#groupmember)?
+- member\_: [GroupMember](./TYPES.md#groupmember)?
 
 ---
-
 
 ## Group link commands
 
 These commands can be used by bots that manage multiple public groups
 
-
 ### APICreateGroupLink
 
 Create group link.
 
-*Network usage*: interactive.
+_Network usage_: interactive.
 
 **Parameters**:
+
 - groupId: int64
 - memberRole: [GroupMemberRole](./TYPES.md#groupmemberrole)
 
@@ -925,7 +966,7 @@ Create group link.
 ```
 
 ```javascript
-'/_create link #' + groupId + ' ' + memberRole // JavaScript
+"/_create link #" + groupId + " " + memberRole // JavaScript
 ```
 
 ```python
@@ -935,6 +976,7 @@ Create group link.
 **Response**:
 
 GroupLinkCreated: Group link created.
+
 - type: "groupLinkCreated"
 - user: [User](./TYPES.md#user)
 - groupInfo: [GroupInfo](./TYPES.md#groupinfo)
@@ -942,14 +984,14 @@ GroupLinkCreated: Group link created.
 
 ---
 
-
 ### APIGroupLinkMemberRole
 
 Set member role for group link.
 
-*Network usage*: no.
+_Network usage_: no.
 
 **Parameters**:
+
 - groupId: int64
 - memberRole: [GroupMemberRole](./TYPES.md#groupmemberrole)
 
@@ -960,7 +1002,7 @@ Set member role for group link.
 ```
 
 ```javascript
-'/_set link role #' + groupId + ' ' + memberRole // JavaScript
+"/_set link role #" + groupId + " " + memberRole // JavaScript
 ```
 
 ```python
@@ -970,6 +1012,7 @@ Set member role for group link.
 **Response**:
 
 GroupLink: Group link.
+
 - type: "groupLink"
 - user: [User](./TYPES.md#user)
 - groupInfo: [GroupInfo](./TYPES.md#groupinfo)
@@ -977,14 +1020,14 @@ GroupLink: Group link.
 
 ---
 
-
 ### APIDeleteGroupLink
 
 Delete group link.
 
-*Network usage*: background.
+_Network usage_: background.
 
 **Parameters**:
+
 - groupId: int64
 
 **Syntax**:
@@ -994,7 +1037,7 @@ Delete group link.
 ```
 
 ```javascript
-'/_delete link #' + groupId // JavaScript
+"/_delete link #" + groupId // JavaScript
 ```
 
 ```python
@@ -1004,20 +1047,21 @@ Delete group link.
 **Response**:
 
 GroupLinkDeleted: Group link deleted.
+
 - type: "groupLinkDeleted"
 - user: [User](./TYPES.md#user)
 - groupInfo: [GroupInfo](./TYPES.md#groupinfo)
 
 ---
 
-
 ### APIGetGroupLink
 
 Get group link.
 
-*Network usage*: no.
+_Network usage_: no.
 
 **Parameters**:
+
 - groupId: int64
 
 **Syntax**:
@@ -1027,7 +1071,7 @@ Get group link.
 ```
 
 ```javascript
-'/_get link #' + groupId // JavaScript
+"/_get link #" + groupId // JavaScript
 ```
 
 ```python
@@ -1037,6 +1081,7 @@ Get group link.
 **Response**:
 
 GroupLink: Group link.
+
 - type: "groupLink"
 - user: [User](./TYPES.md#user)
 - groupInfo: [GroupInfo](./TYPES.md#groupinfo)
@@ -1044,19 +1089,18 @@ GroupLink: Group link.
 
 ---
 
-
 ## Connection commands
 
 These commands may be used to create connections. Most bots do not need to use them - bot users will connect via bot address with auto-accept enabled.
-
 
 ### APIAddContact
 
 Create 1-time invitation link.
 
-*Network usage*: interactive.
+_Network usage_: interactive.
 
 **Parameters**:
+
 - userId: int64
 - incognito: bool
 
@@ -1067,7 +1111,7 @@ Create 1-time invitation link.
 ```
 
 ```javascript
-'/_connect ' + userId + (incognito ? ' incognito=on' : '') // JavaScript
+"/_connect " + userId + (incognito ? " incognito=on" : "") // JavaScript
 ```
 
 ```python
@@ -1077,6 +1121,7 @@ Create 1-time invitation link.
 **Response**:
 
 Invitation: One-time invitation.
+
 - type: "invitation"
 - user: [User](./TYPES.md#user)
 - connLinkInvitation: [CreatedConnLink](./TYPES.md#createdconnlink)
@@ -1084,14 +1129,14 @@ Invitation: One-time invitation.
 
 ---
 
-
 ### APIConnectPlan
 
 Determine SimpleX link type and if the bot is already connected via this link.
 
-*Network usage*: interactive.
+_Network usage_: interactive.
 
 **Parameters**:
+
 - userId: int64
 - connectionLink: string?
 
@@ -1102,7 +1147,7 @@ Determine SimpleX link type and if the bot is already connected via this link.
 ```
 
 ```javascript
-'/_connect plan ' + userId + ' ' + connectionLink // JavaScript
+"/_connect plan " + userId + " " + connectionLink // JavaScript
 ```
 
 ```python
@@ -1112,6 +1157,7 @@ Determine SimpleX link type and if the bot is already connected via this link.
 **Response**:
 
 ConnectionPlan: Connection link information.
+
 - type: "connectionPlan"
 - user: [User](./TYPES.md#user)
 - connLink: [CreatedConnLink](./TYPES.md#createdconnlink)
@@ -1119,17 +1165,17 @@ ConnectionPlan: Connection link information.
 
 ---
 
-
 ### APIConnect
 
 Connect via SimpleX link. The link can be 1-time invitation link, contact address or group link
 
-*Network usage*: interactive.
+_Network usage_: interactive.
 
 **Parameters**:
+
 - userId: int64
 - incognito: bool
-- connLink_: [CreatedConnLink](./TYPES.md#createdconnlink)?
+- connLink\_: [CreatedConnLink](./TYPES.md#createdconnlink)?
 
 **Syntax**:
 
@@ -1138,7 +1184,7 @@ Connect via SimpleX link. The link can be 1-time invitation link, contact addres
 ```
 
 ```javascript
-'/_connect ' + userId + ' ' + connLink_.toString() // JavaScript
+"/_connect " + userId + " " + connLink_.toString() // JavaScript
 ```
 
 ```python
@@ -1148,17 +1194,20 @@ Connect via SimpleX link. The link can be 1-time invitation link, contact addres
 **Responses**:
 
 SentConfirmation: Confirmation sent to one-time invitation.
+
 - type: "sentConfirmation"
 - user: [User](./TYPES.md#user)
 - connection: [PendingContactConnection](./TYPES.md#pendingcontactconnection)
 - customUserProfile: [Profile](./TYPES.md#profile)?
 
 ContactAlreadyExists: Contact already exists.
+
 - type: "contactAlreadyExists"
 - user: [User](./TYPES.md#user)
 - contact: [Contact](./TYPES.md#contact)
 
 SentInvitation: Invitation sent to contact address.
+
 - type: "sentInvitation"
 - user: [User](./TYPES.md#user)
 - connection: [PendingContactConnection](./TYPES.md#pendingcontactconnection)
@@ -1166,14 +1215,14 @@ SentInvitation: Invitation sent to contact address.
 
 ---
 
-
 ### APIAcceptContact
 
 Accept contact request.
 
-*Network usage*: interactive.
+_Network usage_: interactive.
 
 **Parameters**:
+
 - contactReqId: int64
 
 **Syntax**:
@@ -1183,7 +1232,7 @@ Accept contact request.
 ```
 
 ```javascript
-'/_accept ' + contactReqId // JavaScript
+"/_accept " + contactReqId // JavaScript
 ```
 
 ```python
@@ -1193,20 +1242,21 @@ Accept contact request.
 **Response**:
 
 AcceptingContactRequest: Contact request accepted.
+
 - type: "acceptingContactRequest"
 - user: [User](./TYPES.md#user)
 - contact: [Contact](./TYPES.md#contact)
 
 ---
 
-
 ### APIRejectContact
 
 Reject contact request. The user who sent the request is **not notified**.
 
-*Network usage*: no.
+_Network usage_: no.
 
 **Parameters**:
+
 - contactReqId: int64
 
 **Syntax**:
@@ -1216,7 +1266,7 @@ Reject contact request. The user who sent the request is **not notified**.
 ```
 
 ```javascript
-'/_reject ' + contactReqId // JavaScript
+"/_reject " + contactReqId // JavaScript
 ```
 
 ```python
@@ -1226,26 +1276,26 @@ Reject contact request. The user who sent the request is **not notified**.
 **Response**:
 
 ContactRequestRejected: Contact request rejected.
+
 - type: "contactRequestRejected"
 - user: [User](./TYPES.md#user)
 - contactRequest: [UserContactRequest](./TYPES.md#usercontactrequest)
-- contact_: [Contact](./TYPES.md#contact)?
+- contact\_: [Contact](./TYPES.md#contact)?
 
 ---
-
 
 ## Chat commands
 
 Commands to list and delete conversations.
 
-
 ### APIListContacts
 
 Get contacts.
 
-*Network usage*: no.
+_Network usage_: no.
 
 **Parameters**:
+
 - userId: int64
 
 **Syntax**:
@@ -1255,7 +1305,7 @@ Get contacts.
 ```
 
 ```javascript
-'/_contacts ' + userId // JavaScript
+"/_contacts " + userId // JavaScript
 ```
 
 ```python
@@ -1265,22 +1315,23 @@ Get contacts.
 **Response**:
 
 ContactsList: Contacts.
+
 - type: "contactsList"
 - user: [User](./TYPES.md#user)
 - contacts: [[Contact](./TYPES.md#contact)]
 
 ---
 
-
 ### APIListGroups
 
 Get groups.
 
-*Network usage*: no.
+_Network usage_: no.
 
 **Parameters**:
+
 - userId: int64
-- contactId_: int64?
+- contactId\_: int64?
 - search: string?
 
 **Syntax**:
@@ -1290,7 +1341,7 @@ Get groups.
 ```
 
 ```javascript
-'/_groups ' + userId + (contactId_ ? ' @' + contactId_ : '') + (search ? ' ' + search : '') // JavaScript
+"/_groups " + userId + (contactId_ ? " @" + contactId_ : "") + (search ? " " + search : "") // JavaScript
 ```
 
 ```python
@@ -1300,20 +1351,21 @@ Get groups.
 **Response**:
 
 GroupsList: Groups.
+
 - type: "groupsList"
 - user: [User](./TYPES.md#user)
 - groups: [[GroupInfoSummary](./TYPES.md#groupinfosummary)]
 
 ---
 
-
 ### APIDeleteChat
 
 Delete chat.
 
-*Network usage*: background.
+_Network usage_: background.
 
 **Parameters**:
+
 - chatRef: [ChatRef](./TYPES.md#chatref)
 - chatDeleteMode: [ChatDeleteMode](./TYPES.md#chatdeletemode)
 
@@ -1324,7 +1376,7 @@ Delete chat.
 ```
 
 ```javascript
-'/_delete ' + chatRef.toString() + ' ' + chatDeleteMode.toString() // JavaScript
+"/_delete " + chatRef.toString() + " " + chatDeleteMode.toString() // JavaScript
 ```
 
 ```python
@@ -1334,33 +1386,34 @@ Delete chat.
 **Responses**:
 
 ContactDeleted: Contact deleted.
+
 - type: "contactDeleted"
 - user: [User](./TYPES.md#user)
 - contact: [Contact](./TYPES.md#contact)
 
 ContactConnectionDeleted: Connection deleted.
+
 - type: "contactConnectionDeleted"
 - user: [User](./TYPES.md#user)
 - connection: [PendingContactConnection](./TYPES.md#pendingcontactconnection)
 
 GroupDeletedUser: User deleted group.
+
 - type: "groupDeletedUser"
 - user: [User](./TYPES.md#user)
 - groupInfo: [GroupInfo](./TYPES.md#groupinfo)
 
 ---
 
-
 ## User profile commands
 
 Most bots don't need to use these commands, as bot profile can be configured manually via CLI or desktop client. These commands can be used by bots that need to manage multiple user profiles (e.g., the profiles of support agents).
-
 
 ### ShowActiveUser
 
 Get active user profile
 
-*Network usage*: no.
+_Network usage_: no.
 
 **Syntax**:
 
@@ -1371,19 +1424,20 @@ Get active user profile
 **Response**:
 
 ActiveUser: Active user profile.
+
 - type: "activeUser"
 - user: [User](./TYPES.md#user)
 
 ---
 
-
 ### CreateActiveUser
 
 Create new user profile
 
-*Network usage*: no.
+_Network usage_: no.
 
 **Parameters**:
+
 - newUser: [NewUser](./TYPES.md#newuser)
 
 **Syntax**:
@@ -1393,7 +1447,7 @@ Create new user profile
 ```
 
 ```javascript
-'/_create user ' + JSON.stringify(newUser) // JavaScript
+"/_create user " + JSON.stringify(newUser) // JavaScript
 ```
 
 ```python
@@ -1403,21 +1457,22 @@ Create new user profile
 **Response**:
 
 ActiveUser: Active user profile.
+
 - type: "activeUser"
 - user: [User](./TYPES.md#user)
 
 **Errors**:
+
 - UserExists: User or contact with this name already exists.
 - InvalidDisplayName: Invalid user display name.
 
 ---
 
-
 ### ListUsers
 
 Get all user profiles
 
-*Network usage*: no.
+_Network usage_: no.
 
 **Syntax**:
 
@@ -1428,19 +1483,20 @@ Get all user profiles
 **Response**:
 
 UsersList: Users.
+
 - type: "usersList"
 - users: [[UserInfo](./TYPES.md#userinfo)]
 
 ---
 
-
 ### APISetActiveUser
 
 Set active user profile
 
-*Network usage*: no.
+_Network usage_: no.
 
 **Parameters**:
+
 - userId: int64
 - viewPwd: string?
 
@@ -1451,7 +1507,7 @@ Set active user profile
 ```
 
 ```javascript
-'/_user ' + userId + (viewPwd ? ' ' + JSON.stringify(viewPwd) : '') // JavaScript
+"/_user " + userId + (viewPwd ? " " + JSON.stringify(viewPwd) : "") // JavaScript
 ```
 
 ```python
@@ -1461,22 +1517,24 @@ Set active user profile
 **Response**:
 
 ActiveUser: Active user profile.
+
 - type: "activeUser"
 - user: [User](./TYPES.md#user)
 
 **Errors**:
+
 - ChatNotStarted: Chat not started.
 
 ---
-
 
 ### APIDeleteUser
 
 Delete user profile.
 
-*Network usage*: background.
+_Network usage_: background.
 
 **Parameters**:
+
 - userId: int64
 - delSMPQueues: bool
 - viewPwd: string?
@@ -1488,7 +1546,7 @@ Delete user profile.
 ```
 
 ```javascript
-'/_delete user ' + userId + ' del_smp=' + (delSMPQueues ? 'on' : 'off') + (viewPwd ? ' ' + JSON.stringify(viewPwd) : '') // JavaScript
+"/_delete user " + userId + " del_smp=" + (delSMPQueues ? "on" : "off") + (viewPwd ? " " + JSON.stringify(viewPwd) : "") // JavaScript
 ```
 
 ```python
@@ -1498,19 +1556,20 @@ Delete user profile.
 **Response**:
 
 CmdOk: Ok.
+
 - type: "cmdOk"
-- user_: [User](./TYPES.md#user)?
+- user\_: [User](./TYPES.md#user)?
 
 ---
-
 
 ### APIUpdateProfile
 
 Update user profile.
 
-*Network usage*: background.
+_Network usage_: background.
 
 **Parameters**:
+
 - userId: int64
 - profile: [Profile](./TYPES.md#profile)
 
@@ -1521,7 +1580,7 @@ Update user profile.
 ```
 
 ```javascript
-'/_profile ' + userId + ' ' + JSON.stringify(profile) // JavaScript
+"/_profile " + userId + " " + JSON.stringify(profile) // JavaScript
 ```
 
 ```python
@@ -1531,6 +1590,7 @@ Update user profile.
 **Response**:
 
 UserProfileUpdated: User profile updated.
+
 - type: "userProfileUpdated"
 - user: [User](./TYPES.md#user)
 - fromProfile: [Profile](./TYPES.md#profile)
@@ -1539,14 +1599,14 @@ UserProfileUpdated: User profile updated.
 
 ---
 
-
 ### APISetContactPrefs
 
 Configure chat preference overrides for the contact.
 
-*Network usage*: background.
+_Network usage_: background.
 
 **Parameters**:
+
 - contactId: int64
 - preferences: [Preferences](./TYPES.md#preferences)
 
@@ -1557,7 +1617,7 @@ Configure chat preference overrides for the contact.
 ```
 
 ```javascript
-'/_set prefs @' + contactId + ' ' + JSON.stringify(preferences) // JavaScript
+"/_set prefs @" + contactId + " " + JSON.stringify(preferences) // JavaScript
 ```
 
 ```python
@@ -1567,6 +1627,7 @@ Configure chat preference overrides for the contact.
 **Response**:
 
 ContactPrefsUpdated: Contact preferences updated.
+
 - type: "contactPrefsUpdated"
 - user: [User](./TYPES.md#user)
 - fromContact: [Contact](./TYPES.md#contact)

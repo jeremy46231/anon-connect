@@ -174,44 +174,43 @@ This file is generated automatically.
 - [XFTPRcvFile](#xftprcvfile)
 - [XFTPSndFile](#xftpsndfile)
 
-
 ---
 
 ## ACIReaction
 
 **Record type**:
+
 - chatInfo: [ChatInfo](#chatinfo)
 - chatReaction: [CIReaction](#cireaction)
-
 
 ---
 
 ## AChat
 
 **Record type**:
+
 - chatInfo: [ChatInfo](#chatinfo)
 - chatItems: [[ChatItem](#chatitem)]
 - chatStats: [ChatStats](#chatstats)
-
 
 ---
 
 ## AChatItem
 
 **Record type**:
+
 - chatInfo: [ChatInfo](#chatinfo)
 - chatItem: [ChatItem](#chatitem)
-
 
 ---
 
 ## AddressSettings
 
 **Record type**:
+
 - businessAddress: bool
 - autoAccept: [AutoAccept](#autoaccept)?
 - autoReply: [MsgContent](#msgcontent)?
-
 
 ---
 
@@ -220,25 +219,30 @@ This file is generated automatically.
 **Discriminated union type**:
 
 DECRYPT_AES:
+
 - type: "DECRYPT_AES"
 
 DECRYPT_CB:
+
 - type: "DECRYPT_CB"
 
 RATCHET_HEADER:
+
 - type: "RATCHET_HEADER"
 
 RATCHET_EARLIER:
+
 - type: "RATCHET_EARLIER"
 - : word32
 
 RATCHET_SKIPPED:
+
 - type: "RATCHET_SKIPPED"
 - : word32
 
 RATCHET_SYNC:
-- type: "RATCHET_SYNC"
 
+- type: "RATCHET_SYNC"
 
 ---
 
@@ -247,93 +251,106 @@ RATCHET_SYNC:
 **Discriminated union type**:
 
 CMD:
+
 - type: "CMD"
 - cmdErr: [CommandErrorType](#commanderrortype)
 - errContext: string
 
 CONN:
+
 - type: "CONN"
 - connErr: [ConnectionErrorType](#connectionerrortype)
 - errContext: string
 
 NO_USER:
+
 - type: "NO_USER"
 
 SMP:
+
 - type: "SMP"
 - serverAddress: string
 - smpErr: [ErrorType](#errortype)
 
 NTF:
+
 - type: "NTF"
 - serverAddress: string
 - ntfErr: [ErrorType](#errortype)
 
 XFTP:
+
 - type: "XFTP"
 - serverAddress: string
 - xftpErr: [XFTPErrorType](#xftperrortype)
 
 FILE:
+
 - type: "FILE"
 - fileErr: [FileErrorType](#fileerrortype)
 
 PROXY:
+
 - type: "PROXY"
 - proxyServer: string
 - relayServer: string
 - proxyErr: [ProxyClientError](#proxyclienterror)
 
 RCP:
+
 - type: "RCP"
 - rcpErr: [RCErrorType](#rcerrortype)
 
 BROKER:
+
 - type: "BROKER"
 - brokerAddress: string
 - brokerErr: [BrokerErrorType](#brokererrortype)
 
 AGENT:
+
 - type: "AGENT"
 - agentErr: [SMPAgentError](#smpagenterror)
 
 INTERNAL:
+
 - type: "INTERNAL"
 - internalErr: string
 
 CRITICAL:
+
 - type: "CRITICAL"
 - offerRestart: bool
 - criticalErr: string
 
 INACTIVE:
-- type: "INACTIVE"
 
+- type: "INACTIVE"
 
 ---
 
 ## AutoAccept
 
 **Record type**:
-- acceptIncognito: bool
 
+- acceptIncognito: bool
 
 ---
 
 ## BlockingInfo
 
 **Record type**:
-- reason: [BlockingReason](#blockingreason)
 
+- reason: [BlockingReason](#blockingreason)
 
 ---
 
 ## BlockingReason
 
 **Enum type**:
+
 - "spam"
 - "content"
-
 
 ---
 
@@ -342,54 +359,61 @@ INACTIVE:
 **Discriminated union type**:
 
 RESPONSE:
+
 - type: "RESPONSE"
 - respErr: string
 
 UNEXPECTED:
+
 - type: "UNEXPECTED"
 - respErr: string
 
 NETWORK:
+
 - type: "NETWORK"
 
 HOST:
+
 - type: "HOST"
 
 NO_SERVICE:
+
 - type: "NO_SERVICE"
 
 TRANSPORT:
+
 - type: "TRANSPORT"
 - transportErr: [TransportError](#transporterror)
 
 TIMEOUT:
-- type: "TIMEOUT"
 
+- type: "TIMEOUT"
 
 ---
 
 ## BusinessChatInfo
 
 **Record type**:
+
 - chatType: [BusinessChatType](#businesschattype)
 - businessId: string
 - customerId: string
-
 
 ---
 
 ## BusinessChatType
 
 **Enum type**:
+
 - "business"
 - "customer"
-
 
 ---
 
 ## CICallStatus
 
 **Enum type**:
+
 - "pending"
 - "missed"
 - "rejected"
@@ -399,7 +423,6 @@ TIMEOUT:
 - "ended"
 - "error"
 
-
 ---
 
 ## CIContent
@@ -407,154 +430,184 @@ TIMEOUT:
 **Discriminated union type**:
 
 SndMsgContent:
+
 - type: "sndMsgContent"
 - msgContent: [MsgContent](#msgcontent)
 
 RcvMsgContent:
+
 - type: "rcvMsgContent"
 - msgContent: [MsgContent](#msgcontent)
 
 SndDeleted:
+
 - type: "sndDeleted"
 - deleteMode: [CIDeleteMode](#cideletemode)
 
 RcvDeleted:
+
 - type: "rcvDeleted"
 - deleteMode: [CIDeleteMode](#cideletemode)
 
 SndCall:
+
 - type: "sndCall"
 - status: [CICallStatus](#cicallstatus)
 - duration: int
 
 RcvCall:
+
 - type: "rcvCall"
 - status: [CICallStatus](#cicallstatus)
 - duration: int
 
 RcvIntegrityError:
+
 - type: "rcvIntegrityError"
 - msgError: [MsgErrorType](#msgerrortype)
 
 RcvDecryptionError:
+
 - type: "rcvDecryptionError"
 - msgDecryptError: [MsgDecryptError](#msgdecrypterror)
 - msgCount: word32
 
 RcvGroupInvitation:
+
 - type: "rcvGroupInvitation"
 - groupInvitation: [CIGroupInvitation](#cigroupinvitation)
 - memberRole: [GroupMemberRole](#groupmemberrole)
 
 SndGroupInvitation:
+
 - type: "sndGroupInvitation"
 - groupInvitation: [CIGroupInvitation](#cigroupinvitation)
 - memberRole: [GroupMemberRole](#groupmemberrole)
 
 RcvDirectEvent:
+
 - type: "rcvDirectEvent"
 - rcvDirectEvent: [RcvDirectEvent](#rcvdirectevent)
 
 RcvGroupEvent:
+
 - type: "rcvGroupEvent"
 - rcvGroupEvent: [RcvGroupEvent](#rcvgroupevent)
 
 SndGroupEvent:
+
 - type: "sndGroupEvent"
 - sndGroupEvent: [SndGroupEvent](#sndgroupevent)
 
 RcvConnEvent:
+
 - type: "rcvConnEvent"
 - rcvConnEvent: [RcvConnEvent](#rcvconnevent)
 
 SndConnEvent:
+
 - type: "sndConnEvent"
 - sndConnEvent: [SndConnEvent](#sndconnevent)
 
 RcvChatFeature:
+
 - type: "rcvChatFeature"
 - feature: [ChatFeature](#chatfeature)
 - enabled: [PrefEnabled](#prefenabled)
 - param: int?
 
 SndChatFeature:
+
 - type: "sndChatFeature"
 - feature: [ChatFeature](#chatfeature)
 - enabled: [PrefEnabled](#prefenabled)
 - param: int?
 
 RcvChatPreference:
+
 - type: "rcvChatPreference"
 - feature: [ChatFeature](#chatfeature)
 - allowed: [FeatureAllowed](#featureallowed)
 - param: int?
 
 SndChatPreference:
+
 - type: "sndChatPreference"
 - feature: [ChatFeature](#chatfeature)
 - allowed: [FeatureAllowed](#featureallowed)
 - param: int?
 
 RcvGroupFeature:
+
 - type: "rcvGroupFeature"
 - groupFeature: [GroupFeature](#groupfeature)
 - preference: [GroupPreference](#grouppreference)
 - param: int?
-- memberRole_: [GroupMemberRole](#groupmemberrole)?
+- memberRole\_: [GroupMemberRole](#groupmemberrole)?
 
 SndGroupFeature:
+
 - type: "sndGroupFeature"
 - groupFeature: [GroupFeature](#groupfeature)
 - preference: [GroupPreference](#grouppreference)
 - param: int?
-- memberRole_: [GroupMemberRole](#groupmemberrole)?
+- memberRole\_: [GroupMemberRole](#groupmemberrole)?
 
 RcvChatFeatureRejected:
+
 - type: "rcvChatFeatureRejected"
 - feature: [ChatFeature](#chatfeature)
 
 RcvGroupFeatureRejected:
+
 - type: "rcvGroupFeatureRejected"
 - groupFeature: [GroupFeature](#groupfeature)
 
 SndModerated:
+
 - type: "sndModerated"
 
 RcvModerated:
+
 - type: "rcvModerated"
 
 RcvBlocked:
+
 - type: "rcvBlocked"
 
 SndDirectE2EEInfo:
+
 - type: "sndDirectE2EEInfo"
 - e2eeInfo: [E2EInfo](#e2einfo)
 
 RcvDirectE2EEInfo:
+
 - type: "rcvDirectE2EEInfo"
 - e2eeInfo: [E2EInfo](#e2einfo)
 
 SndGroupE2EEInfo:
+
 - type: "sndGroupE2EEInfo"
 - e2eeInfo: [E2EInfo](#e2einfo)
 
 RcvGroupE2EEInfo:
+
 - type: "rcvGroupE2EEInfo"
 - e2eeInfo: [E2EInfo](#e2einfo)
 
 ChatBanner:
-- type: "chatBanner"
 
+- type: "chatBanner"
 
 ---
 
 ## CIDeleteMode
 
 **Enum type**:
+
 - "broadcast"
 - "internal"
 - "internalMark"
-
 
 ---
 
@@ -563,23 +616,26 @@ ChatBanner:
 **Discriminated union type**:
 
 Deleted:
+
 - type: "deleted"
 - deletedTs: UTCTime?
 - chatType: [ChatType](#chattype)
 
 Blocked:
+
 - type: "blocked"
 - deletedTs: UTCTime?
 
 BlockedByAdmin:
+
 - type: "blockedByAdmin"
 - deletedTs: UTCTime?
 
 Moderated:
+
 - type: "moderated"
 - deletedTs: UTCTime?
 - byGroupMember: [GroupMember](#groupmember)
-
 
 ---
 
@@ -588,37 +644,42 @@ Moderated:
 **Discriminated union type**:
 
 DirectSnd:
+
 - type: "directSnd"
 
 DirectRcv:
+
 - type: "directRcv"
 
 GroupSnd:
+
 - type: "groupSnd"
 
 GroupRcv:
+
 - type: "groupRcv"
 - groupMember: [GroupMember](#groupmember)
 
 LocalSnd:
+
 - type: "localSnd"
 
 LocalRcv:
-- type: "localRcv"
 
+- type: "localRcv"
 
 ---
 
 ## CIFile
 
 **Record type**:
+
 - fileId: int64
 - fileName: string
 - fileSize: int64
 - fileSource: [CryptoFile](#cryptofile)?
 - fileStatus: [CIFileStatus](#cifilestatus)
 - fileProtocol: [FileProtocol](#fileprotocol)
-
 
 ---
 
@@ -627,59 +688,73 @@ LocalRcv:
 **Discriminated union type**:
 
 SndStored:
+
 - type: "sndStored"
 
 SndTransfer:
+
 - type: "sndTransfer"
 - sndProgress: int64
 - sndTotal: int64
 
 SndCancelled:
+
 - type: "sndCancelled"
 
 SndComplete:
+
 - type: "sndComplete"
 
 SndError:
+
 - type: "sndError"
 - sndFileError: [FileError](#fileerror)
 
 SndWarning:
+
 - type: "sndWarning"
 - sndFileError: [FileError](#fileerror)
 
 RcvInvitation:
+
 - type: "rcvInvitation"
 
 RcvAccepted:
+
 - type: "rcvAccepted"
 
 RcvTransfer:
+
 - type: "rcvTransfer"
 - rcvProgress: int64
 - rcvTotal: int64
 
 RcvAborted:
+
 - type: "rcvAborted"
 
 RcvComplete:
+
 - type: "rcvComplete"
 
 RcvCancelled:
+
 - type: "rcvCancelled"
 
 RcvError:
+
 - type: "rcvError"
 - rcvFileError: [FileError](#fileerror)
 
 RcvWarning:
+
 - type: "rcvWarning"
 - rcvFileError: [FileError](#fileerror)
 
 Invalid:
+
 - type: "invalid"
 - text: string
-
 
 ---
 
@@ -688,9 +763,11 @@ Invalid:
 **Discriminated union type**:
 
 Unknown:
+
 - type: "unknown"
 
 Contact:
+
 - type: "contact"
 - chatName: string
 - msgDir: [MsgDirection](#msgdirection)
@@ -698,61 +775,62 @@ Contact:
 - chatItemId: int64?
 
 Group:
+
 - type: "group"
 - chatName: string
 - msgDir: [MsgDirection](#msgdirection)
 - groupId: int64?
 - chatItemId: int64?
 
-
 ---
 
 ## CIGroupInvitation
 
 **Record type**:
+
 - groupId: int64
 - groupMemberId: int64
 - localDisplayName: string
 - groupProfile: [GroupProfile](#groupprofile)
 - status: [CIGroupInvitationStatus](#cigroupinvitationstatus)
 
-
 ---
 
 ## CIGroupInvitationStatus
 
 **Enum type**:
+
 - "pending"
 - "accepted"
 - "rejected"
 - "expired"
-
 
 ---
 
 ## CIMention
 
 **Record type**:
+
 - memberId: string
 - memberRef: [CIMentionMember](#cimentionmember)?
-
 
 ---
 
 ## CIMentionMember
 
 **Record type**:
+
 - groupMemberId: int64
 - displayName: string
 - localAlias: string?
 - memberRole: [GroupMemberRole](#groupmemberrole)
-
 
 ---
 
 ## CIMeta
 
 **Record type**:
+
 - itemId: int64
 - itemTs: UTCTime
 - itemText: string
@@ -772,12 +850,12 @@ Group:
 - createdAt: UTCTime
 - updatedAt: UTCTime
 
-
 ---
 
 ## CIQuote
 
 **Record type**:
+
 - chatDir: [CIDirection](#cidirection)?
 - itemId: int64?
 - sharedMsgId: string?
@@ -785,27 +863,26 @@ Group:
 - content: [MsgContent](#msgcontent)
 - formattedText: [[FormattedText](#formattedtext)]?
 
-
 ---
 
 ## CIReaction
 
 **Record type**:
+
 - chatDir: [CIDirection](#cidirection)
 - chatItem: [ChatItem](#chatitem)
 - sentAt: UTCTime
 - reaction: [MsgReaction](#msgreaction)
-
 
 ---
 
 ## CIReactionCount
 
 **Record type**:
+
 - reaction: [MsgReaction](#msgreaction)
 - userReacted: bool
 - totalReacted: int
-
 
 ---
 
@@ -814,47 +891,55 @@ Group:
 **Discriminated union type**:
 
 SndNew:
+
 - type: "sndNew"
 
 SndSent:
+
 - type: "sndSent"
 - sndProgress: [SndCIStatusProgress](#sndcistatusprogress)
 
 SndRcvd:
+
 - type: "sndRcvd"
 - msgRcptStatus: [MsgReceiptStatus](#msgreceiptstatus)
 - sndProgress: [SndCIStatusProgress](#sndcistatusprogress)
 
 SndErrorAuth:
+
 - type: "sndErrorAuth"
 
 SndError:
+
 - type: "sndError"
 - agentError: [SndError](#snderror)
 
 SndWarning:
+
 - type: "sndWarning"
 - agentError: [SndError](#snderror)
 
 RcvNew:
+
 - type: "rcvNew"
 
 RcvRead:
+
 - type: "rcvRead"
 
 Invalid:
+
 - type: "invalid"
 - text: string
-
 
 ---
 
 ## CITimed
 
 **Record type**:
+
 - ttl: int
 - deleteAt: UTCTime?
-
 
 ---
 
@@ -863,16 +948,17 @@ Invalid:
 **Discriminated union type**:
 
 Command:
+
 - type: "command"
 - keyword: string
 - label: string
 - params: string?
 
 Menu:
+
 - type: "menu"
 - label: string
 - commands: [[ChatBotCommand](#chatbotcommand)]
-
 
 ---
 
@@ -881,14 +967,17 @@ Menu:
 **Discriminated union type**:
 
 Full:
+
 - type: "full"
 - notify: bool
 
 Entity:
+
 - type: "entity"
 - notify: bool
 
 Messages:
+
 - type: "messages"
 
 **Syntax**:
@@ -898,13 +987,12 @@ full|entity|messages[ notify=off]
 ```
 
 ```javascript
-type + (type == 'messages' ? '' : (!notify ? ' notify=off' : '')) // JavaScript
+type + (type == "messages" ? "" : !notify ? " notify=off" : "") // JavaScript
 ```
 
 ```python
 str(type) + ('' if str(type) == 'messages' else (' notify=off' if not notify else '')) # Python
 ```
-
 
 ---
 
@@ -913,18 +1001,20 @@ str(type) + ('' if str(type) == 'messages' else (' notify=off' if not notify els
 **Discriminated union type**:
 
 Error:
+
 - type: "error"
 - errorType: [ChatErrorType](#chaterrortype)
 
 ErrorAgent:
+
 - type: "errorAgent"
 - agentError: [AgentErrorType](#agenterrortype)
-- connectionEntity_: [ConnectionEntity](#connectionentity)?
+- connectionEntity\_: [ConnectionEntity](#connectionentity)?
 
 ErrorStore:
+
 - type: "errorStore"
 - storeError: [StoreError](#storeerror)
-
 
 ---
 
@@ -933,296 +1023,370 @@ ErrorStore:
 **Discriminated union type**:
 
 NoActiveUser:
+
 - type: "noActiveUser"
 
 NoConnectionUser:
+
 - type: "noConnectionUser"
 - agentConnId: string
 
 NoSndFileUser:
+
 - type: "noSndFileUser"
 - agentSndFileId: string
 
 NoRcvFileUser:
+
 - type: "noRcvFileUser"
 - agentRcvFileId: string
 
 UserUnknown:
+
 - type: "userUnknown"
 
 ActiveUserExists:
+
 - type: "activeUserExists"
 
 UserExists:
+
 - type: "userExists"
 - contactName: string
 
 DifferentActiveUser:
+
 - type: "differentActiveUser"
 - commandUserId: int64
 - activeUserId: int64
 
 CantDeleteActiveUser:
+
 - type: "cantDeleteActiveUser"
 - userId: int64
 
 CantDeleteLastUser:
+
 - type: "cantDeleteLastUser"
 - userId: int64
 
 CantHideLastUser:
+
 - type: "cantHideLastUser"
 - userId: int64
 
 HiddenUserAlwaysMuted:
+
 - type: "hiddenUserAlwaysMuted"
 - userId: int64
 
 EmptyUserPassword:
+
 - type: "emptyUserPassword"
 - userId: int64
 
 UserAlreadyHidden:
+
 - type: "userAlreadyHidden"
 - userId: int64
 
 UserNotHidden:
+
 - type: "userNotHidden"
 - userId: int64
 
 InvalidDisplayName:
+
 - type: "invalidDisplayName"
 - displayName: string
 - validName: string
 
 ChatNotStarted:
+
 - type: "chatNotStarted"
 
 ChatNotStopped:
+
 - type: "chatNotStopped"
 
 ChatStoreChanged:
+
 - type: "chatStoreChanged"
 
 InvalidConnReq:
+
 - type: "invalidConnReq"
 
 UnsupportedConnReq:
+
 - type: "unsupportedConnReq"
 
 ConnReqMessageProhibited:
+
 - type: "connReqMessageProhibited"
 
 ContactNotReady:
+
 - type: "contactNotReady"
 - contact: [Contact](#contact)
 
 ContactNotActive:
+
 - type: "contactNotActive"
 - contact: [Contact](#contact)
 
 ContactDisabled:
+
 - type: "contactDisabled"
 - contact: [Contact](#contact)
 
 ConnectionDisabled:
+
 - type: "connectionDisabled"
 - connection: [Connection](#connection)
 
 GroupUserRole:
+
 - type: "groupUserRole"
 - groupInfo: [GroupInfo](#groupinfo)
 - requiredRole: [GroupMemberRole](#groupmemberrole)
 
 GroupMemberInitialRole:
+
 - type: "groupMemberInitialRole"
 - groupInfo: [GroupInfo](#groupinfo)
 - initialRole: [GroupMemberRole](#groupmemberrole)
 
 ContactIncognitoCantInvite:
+
 - type: "contactIncognitoCantInvite"
 
 GroupIncognitoCantInvite:
+
 - type: "groupIncognitoCantInvite"
 
 GroupContactRole:
+
 - type: "groupContactRole"
 - contactName: string
 
 GroupDuplicateMember:
+
 - type: "groupDuplicateMember"
 - contactName: string
 
 GroupDuplicateMemberId:
+
 - type: "groupDuplicateMemberId"
 
 GroupNotJoined:
+
 - type: "groupNotJoined"
 - groupInfo: [GroupInfo](#groupinfo)
 
 GroupMemberNotActive:
+
 - type: "groupMemberNotActive"
 
 CantBlockMemberForSelf:
+
 - type: "cantBlockMemberForSelf"
 - groupInfo: [GroupInfo](#groupinfo)
 - member: [GroupMember](#groupmember)
 - setShowMessages: bool
 
 GroupMemberUserRemoved:
+
 - type: "groupMemberUserRemoved"
 
 GroupMemberNotFound:
+
 - type: "groupMemberNotFound"
 
 GroupCantResendInvitation:
+
 - type: "groupCantResendInvitation"
 - groupInfo: [GroupInfo](#groupinfo)
 - contactName: string
 
 GroupInternal:
+
 - type: "groupInternal"
 - message: string
 
 FileNotFound:
+
 - type: "fileNotFound"
 - message: string
 
 FileSize:
+
 - type: "fileSize"
 - filePath: string
 
 FileAlreadyReceiving:
+
 - type: "fileAlreadyReceiving"
 - message: string
 
 FileCancelled:
+
 - type: "fileCancelled"
 - message: string
 
 FileCancel:
+
 - type: "fileCancel"
 - fileId: int64
 - message: string
 
 FileAlreadyExists:
+
 - type: "fileAlreadyExists"
 - filePath: string
 
 FileRead:
+
 - type: "fileRead"
 - filePath: string
 - message: string
 
 FileWrite:
+
 - type: "fileWrite"
 - filePath: string
 - message: string
 
 FileSend:
+
 - type: "fileSend"
 - fileId: int64
 - agentError: [AgentErrorType](#agenterrortype)
 
 FileRcvChunk:
+
 - type: "fileRcvChunk"
 - message: string
 
 FileInternal:
+
 - type: "fileInternal"
 - message: string
 
 FileImageType:
+
 - type: "fileImageType"
 - filePath: string
 
 FileImageSize:
+
 - type: "fileImageSize"
 - filePath: string
 
 FileNotReceived:
+
 - type: "fileNotReceived"
 - fileId: int64
 
 FileNotApproved:
+
 - type: "fileNotApproved"
 - fileId: int64
 - unknownServers: [string]
 
 FallbackToSMPProhibited:
+
 - type: "fallbackToSMPProhibited"
 - fileId: int64
 
 InlineFileProhibited:
+
 - type: "inlineFileProhibited"
 - fileId: int64
 
 InvalidForward:
+
 - type: "invalidForward"
 
 InvalidChatItemUpdate:
+
 - type: "invalidChatItemUpdate"
 
 InvalidChatItemDelete:
+
 - type: "invalidChatItemDelete"
 
 HasCurrentCall:
+
 - type: "hasCurrentCall"
 
 NoCurrentCall:
+
 - type: "noCurrentCall"
 
 CallContact:
+
 - type: "callContact"
 - contactId: int64
 
 DirectMessagesProhibited:
+
 - type: "directMessagesProhibited"
 - direction: [MsgDirection](#msgdirection)
 - contact: [Contact](#contact)
 
 AgentVersion:
+
 - type: "agentVersion"
 
 AgentNoSubResult:
+
 - type: "agentNoSubResult"
 - agentConnId: string
 
 CommandError:
+
 - type: "commandError"
 - message: string
 
 AgentCommandError:
+
 - type: "agentCommandError"
 - message: string
 
 InvalidFileDescription:
+
 - type: "invalidFileDescription"
 - message: string
 
 ConnectionIncognitoChangeProhibited:
+
 - type: "connectionIncognitoChangeProhibited"
 
 ConnectionUserChangeProhibited:
+
 - type: "connectionUserChangeProhibited"
 
 PeerChatVRangeIncompatible:
+
 - type: "peerChatVRangeIncompatible"
 
 InternalError:
+
 - type: "internalError"
 - message: string
 
 Exception:
+
 - type: "exception"
 - message: string
-
 
 ---
 
 ## ChatFeature
 
 **Enum type**:
+
 - "timedMessages"
 - "fullDelete"
 - "reactions"
@@ -1231,7 +1395,6 @@ Exception:
 - "calls"
 - "sessions"
 
-
 ---
 
 ## ChatInfo
@@ -1239,32 +1402,37 @@ Exception:
 **Discriminated union type**:
 
 Direct:
+
 - type: "direct"
 - contact: [Contact](#contact)
 
 Group:
+
 - type: "group"
 - groupInfo: [GroupInfo](#groupinfo)
 - groupChatScope: [GroupChatScopeInfo](#groupchatscopeinfo)?
 
 Local:
+
 - type: "local"
 - noteFolder: [NoteFolder](#notefolder)
 
 ContactRequest:
+
 - type: "contactRequest"
 - contactRequest: [UserContactRequest](#usercontactrequest)
 
 ContactConnection:
+
 - type: "contactConnection"
 - contactConnection: [PendingContactConnection](#pendingcontactconnection)
-
 
 ---
 
 ## ChatItem
 
 **Record type**:
+
 - chatDir: [CIDirection](#cidirection)
 - meta: [CIMeta](#cimeta)
 - content: [CIContent](#cicontent)
@@ -1274,7 +1442,6 @@ ContactConnection:
 - reactions: [[CIReactionCount](#cireactioncount)]
 - file: [CIFile](#cifile)?
 
-
 ---
 
 ## ChatItemDeletion
@@ -1282,18 +1449,18 @@ ContactConnection:
 Message deletion result.
 
 **Record type**:
+
 - deletedChatItem: [AChatItem](#achatitem)
 - toChatItem: [AChatItem](#achatitem)?
-
 
 ---
 
 ## ChatPeerType
 
 **Enum type**:
+
 - "human"
 - "bot"
-
 
 ---
 
@@ -1302,6 +1469,7 @@ Message deletion result.
 Used in API commands. Chat scope can only be passed with groups.
 
 **Record type**:
+
 - chatType: [ChatType](#chattype)
 - chatId: int64
 - chatScope: [GroupChatScope](#groupchatscope)?
@@ -1313,41 +1481,41 @@ Used in API commands. Chat scope can only be passed with groups.
 ```
 
 ```javascript
-chatType.toString() + chatId + (chatScope ? chatScope.toString() : '') // JavaScript
+chatType.toString() + chatId + (chatScope ? chatScope.toString() : "") // JavaScript
 ```
 
 ```python
 str(chatType) + str(chatId) + ((str(chatScope)) if chatScope is not None else '') # Python
 ```
 
-
 ---
 
 ## ChatSettings
 
 **Record type**:
+
 - enableNtfs: [MsgFilter](#msgfilter)
 - sendRcpts: bool?
 - favorite: bool
-
 
 ---
 
 ## ChatStats
 
 **Record type**:
+
 - unreadCount: int
 - unreadMentions: int
 - reportsCount: int
 - minUnreadItemId: int64
 - unreadChat: bool
 
-
 ---
 
 ## ChatType
 
 **Enum type**:
+
 - "direct"
 - "group"
 - "local"
@@ -1359,19 +1527,19 @@ str(chatType) + str(chatId) + ((str(chatScope)) if chatScope is not None else ''
 ```
 
 ```javascript
-self == 'contact' ? '@' : self == 'group' ? '#' : self == 'local' ? '*' : '' // JavaScript
+self == "contact" ? "@" : self == "group" ? "#" : self == "local" ? "*" : "" // JavaScript
 ```
 
 ```python
 '@' if str(self) == 'contact' else '#' if str(self) == 'group' else '*' if str(self) == 'local' else '' # Python
 ```
 
-
 ---
 
 ## ChatWallpaper
 
 **Record type**:
+
 - preset: string?
 - imageFile: string?
 - background: string?
@@ -1379,22 +1547,22 @@ self == 'contact' ? '@' : self == 'group' ? '#' : self == 'local' ? '*' : '' // 
 - scaleType: [ChatWallpaperScale](#chatwallpaperscale)?
 - scale: double?
 
-
 ---
 
 ## ChatWallpaperScale
 
 **Enum type**:
+
 - "fill"
 - "fit"
 - "repeat"
-
 
 ---
 
 ## Color
 
 **Enum type**:
+
 - "black"
 - "red"
 - "green"
@@ -1404,7 +1572,6 @@ self == 'contact' ? '@' : self == 'group' ? '#' : self == 'local' ? '*' : '' // 
 - "cyan"
 - "white"
 
-
 ---
 
 ## CommandError
@@ -1412,23 +1579,28 @@ self == 'contact' ? '@' : self == 'group' ? '#' : self == 'local' ? '*' : '' // 
 **Discriminated union type**:
 
 UNKNOWN:
+
 - type: "UNKNOWN"
 
 SYNTAX:
+
 - type: "SYNTAX"
 
 PROHIBITED:
+
 - type: "PROHIBITED"
 
 NO_AUTH:
+
 - type: "NO_AUTH"
 
 HAS_AUTH:
+
 - type: "HAS_AUTH"
 
 NO_ENTITY:
-- type: "NO_ENTITY"
 
+- type: "NO_ENTITY"
 
 ---
 
@@ -1437,37 +1609,42 @@ NO_ENTITY:
 **Discriminated union type**:
 
 PROHIBITED:
+
 - type: "PROHIBITED"
 
 SYNTAX:
+
 - type: "SYNTAX"
 
 NO_CONN:
+
 - type: "NO_CONN"
 
 SIZE:
+
 - type: "SIZE"
 
 LARGE:
-- type: "LARGE"
 
+- type: "LARGE"
 
 ---
 
 ## ComposedMessage
 
 **Record type**:
+
 - fileSource: [CryptoFile](#cryptofile)?
 - quotedItemId: int64?
 - msgContent: [MsgContent](#msgcontent)
 - mentions: {string : int64}
-
 
 ---
 
 ## ConnStatus
 
 **Enum type**:
+
 - "new"
 - "prepared"
 - "joined"
@@ -1477,22 +1654,22 @@ LARGE:
 - "ready"
 - "deleted"
 
-
 ---
 
 ## ConnType
 
 **Enum type**:
+
 - "contact"
 - "member"
 - "user_contact"
-
 
 ---
 
 ## Connection
 
 **Record type**:
+
 - connId: int64
 - agentConnId: string
 - connChatVersion: int
@@ -1518,7 +1695,6 @@ LARGE:
 - quotaErrCounter: int
 - createdAt: UTCTime
 
-
 ---
 
 ## ConnectionEntity
@@ -1526,31 +1702,35 @@ LARGE:
 **Discriminated union type**:
 
 RcvDirectMsgConnection:
+
 - type: "rcvDirectMsgConnection"
 - entityConnection: [Connection](#connection)
 - contact: [Contact](#contact)?
 
 RcvGroupMsgConnection:
+
 - type: "rcvGroupMsgConnection"
 - entityConnection: [Connection](#connection)
 - groupInfo: [GroupInfo](#groupinfo)
 - groupMember: [GroupMember](#groupmember)
 
 SndFileConnection:
+
 - type: "sndFileConnection"
 - entityConnection: [Connection](#connection)
 - sndFileTransfer: [SndFileTransfer](#sndfiletransfer)
 
 RcvFileConnection:
+
 - type: "rcvFileConnection"
 - entityConnection: [Connection](#connection)
 - rcvFileTransfer: [RcvFileTransfer](#rcvfiletransfer)
 
 UserContactConnection:
+
 - type: "userContactConnection"
 - entityConnection: [Connection](#connection)
 - userContact: [UserContact](#usercontact)
-
 
 ---
 
@@ -1559,29 +1739,33 @@ UserContactConnection:
 **Discriminated union type**:
 
 NOT_FOUND:
+
 - type: "NOT_FOUND"
 
 DUPLICATE:
+
 - type: "DUPLICATE"
 
 SIMPLEX:
+
 - type: "SIMPLEX"
 
 NOT_ACCEPTED:
+
 - type: "NOT_ACCEPTED"
 
 NOT_AVAILABLE:
-- type: "NOT_AVAILABLE"
 
+- type: "NOT_AVAILABLE"
 
 ---
 
 ## ConnectionMode
 
 **Enum type**:
+
 - "inv"
 - "con"
-
 
 ---
 
@@ -1590,27 +1774,31 @@ NOT_AVAILABLE:
 **Discriminated union type**:
 
 InvitationLink:
+
 - type: "invitationLink"
 - invitationLinkPlan: [InvitationLinkPlan](#invitationlinkplan)
 
 ContactAddress:
+
 - type: "contactAddress"
 - contactAddressPlan: [ContactAddressPlan](#contactaddressplan)
 
 GroupLink:
+
 - type: "groupLink"
 - groupLinkPlan: [GroupLinkPlan](#grouplinkplan)
 
 Error:
+
 - type: "error"
 - chatError: [ChatError](#chaterror)
-
 
 ---
 
 ## Contact
 
 **Record type**:
+
 - contactId: int64
 - localDisplayName: string
 - profile: [LocalProfile](#localprofile)
@@ -1635,7 +1823,6 @@ Error:
 - chatDeleted: bool
 - customData: JSONObject?
 
-
 ---
 
 ## ContactAddressPlan
@@ -1643,47 +1830,52 @@ Error:
 **Discriminated union type**:
 
 Ok:
+
 - type: "ok"
-- contactSLinkData_: [ContactShortLinkData](#contactshortlinkdata)?
+- contactSLinkData\_: [ContactShortLinkData](#contactshortlinkdata)?
 
 OwnLink:
+
 - type: "ownLink"
 
 ConnectingConfirmReconnect:
+
 - type: "connectingConfirmReconnect"
 
 ConnectingProhibit:
+
 - type: "connectingProhibit"
 - contact: [Contact](#contact)
 
 Known:
+
 - type: "known"
 - contact: [Contact](#contact)
 
 ContactViaAddress:
+
 - type: "contactViaAddress"
 - contact: [Contact](#contact)
-
 
 ---
 
 ## ContactShortLinkData
 
 **Record type**:
+
 - profile: [Profile](#profile)
 - message: [MsgContent](#msgcontent)?
 - business: bool
-
 
 ---
 
 ## ContactStatus
 
 **Enum type**:
+
 - "active"
 - "deleted"
 - "deletedByUser"
-
 
 ---
 
@@ -1692,29 +1884,31 @@ ContactViaAddress:
 **Discriminated union type**:
 
 Contact:
+
 - type: "contact"
 - preference: [SimplePreference](#simplepreference)
 
 User:
+
 - type: "user"
 - preference: [SimplePreference](#simplepreference)
-
 
 ---
 
 ## ContactUserPreference
 
 **Record type**:
+
 - enabled: [PrefEnabled](#prefenabled)
 - userPreference: [ContactUserPref](#contactuserpref)
 - contactPreference: [SimplePreference](#simplepreference)
-
 
 ---
 
 ## ContactUserPreferences
 
 **Record type**:
+
 - timedMessages: [ContactUserPreference](#contactuserpreference)
 - fullDelete: [ContactUserPreference](#contactuserpreference)
 - reactions: [ContactUserPreference](#contactuserpreference)
@@ -1724,12 +1918,12 @@ User:
 - sessions: [ContactUserPreference](#contactuserpreference)
 - commands: [[ChatBotCommand](#chatbotcommand)]?
 
-
 ---
 
 ## CreatedConnLink
 
 **Record type**:
+
 - connFullLink: string
 - connShortLink: string?
 
@@ -1740,39 +1934,38 @@ User:
 ```
 
 ```javascript
-connFullLink + (connShortLink ? ' ' + connShortLink : '') // JavaScript
+connFullLink + (connShortLink ? " " + connShortLink : "") // JavaScript
 ```
 
 ```python
 connFullLink + ((' ' + connShortLink) if connShortLink is not None else '') # Python
 ```
 
-
 ---
 
 ## CryptoFile
 
 **Record type**:
+
 - filePath: string
 - cryptoArgs: [CryptoFileArgs](#cryptofileargs)?
-
 
 ---
 
 ## CryptoFileArgs
 
 **Record type**:
+
 - fileKey: string
 - fileNonce: string
-
 
 ---
 
 ## E2EInfo
 
 **Record type**:
-- pqEnabled: bool?
 
+- pqEnabled: bool?
 
 ---
 
@@ -1781,74 +1974,88 @@ connFullLink + ((' ' + connShortLink) if connShortLink is not None else '') # Py
 **Discriminated union type**:
 
 BLOCK:
+
 - type: "BLOCK"
 
 SESSION:
+
 - type: "SESSION"
 
 CMD:
+
 - type: "CMD"
 - cmdErr: [CommandError](#commanderror)
 
 PROXY:
+
 - type: "PROXY"
 - proxyErr: [ProxyError](#proxyerror)
 
 AUTH:
+
 - type: "AUTH"
 
 BLOCKED:
+
 - type: "BLOCKED"
 - blockInfo: [BlockingInfo](#blockinginfo)
 
 SERVICE:
+
 - type: "SERVICE"
 
 CRYPTO:
+
 - type: "CRYPTO"
 
 QUOTA:
+
 - type: "QUOTA"
 
 STORE:
+
 - type: "STORE"
 - storeErr: string
 
 NO_MSG:
+
 - type: "NO_MSG"
 
 LARGE_MSG:
+
 - type: "LARGE_MSG"
 
 EXPIRED:
+
 - type: "EXPIRED"
 
 INTERNAL:
+
 - type: "INTERNAL"
 
-DUPLICATE_:
-- type: "DUPLICATE_"
+DUPLICATE\_:
 
+- type: "DUPLICATE\_"
 
 ---
 
 ## FeatureAllowed
 
 **Enum type**:
+
 - "always"
 - "yes"
 - "no"
-
 
 ---
 
 ## FileDescr
 
 **Record type**:
+
 - fileDescrText: string
 - fileDescrPartNo: int
 - fileDescrComplete: bool
-
 
 ---
 
@@ -1857,24 +2064,28 @@ DUPLICATE_:
 **Discriminated union type**:
 
 Auth:
+
 - type: "auth"
 
 Blocked:
+
 - type: "blocked"
 - server: string
 - blockInfo: [BlockingInfo](#blockinginfo)
 
 NoFile:
+
 - type: "noFile"
 
 Relay:
+
 - type: "relay"
 - srvError: [SrvError](#srverror)
 
 Other:
+
 - type: "other"
 - fileError: string
-
 
 ---
 
@@ -1883,28 +2094,33 @@ Other:
 **Discriminated union type**:
 
 NOT_APPROVED:
+
 - type: "NOT_APPROVED"
 
 SIZE:
+
 - type: "SIZE"
 
 REDIRECT:
+
 - type: "REDIRECT"
 - redirectError: string
 
 FILE_IO:
+
 - type: "FILE_IO"
 - fileIOError: string
 
 NO_FILE:
-- type: "NO_FILE"
 
+- type: "NO_FILE"
 
 ---
 
 ## FileInvitation
 
 **Record type**:
+
 - fileName: string
 - fileSize: int64
 - fileDigest: string?
@@ -1912,34 +2128,34 @@ NO_FILE:
 - fileInline: [InlineFileMode](#inlinefilemode)?
 - fileDescr: [FileDescr](#filedescr)?
 
-
 ---
 
 ## FileProtocol
 
 **Enum type**:
+
 - "smp"
 - "xftp"
 - "local"
-
 
 ---
 
 ## FileStatus
 
 **Enum type**:
+
 - "new"
 - "accepted"
 - "connected"
 - "complete"
 - "cancelled"
 
-
 ---
 
 ## FileTransferMeta
 
 **Record type**:
+
 - fileId: int64
 - xftpSndFile: [XFTPSndFile](#xftpsndfile)?
 - xftpRedirectFor: int64?
@@ -1950,7 +2166,6 @@ NO_FILE:
 - chunkSize: int64
 - cancelled: bool
 
-
 ---
 
 ## Format
@@ -1958,33 +2173,42 @@ NO_FILE:
 **Discriminated union type**:
 
 Bold:
+
 - type: "bold"
 
 Italic:
+
 - type: "italic"
 
 StrikeThrough:
+
 - type: "strikeThrough"
 
 Snippet:
+
 - type: "snippet"
 
 Secret:
+
 - type: "secret"
 
 Colored:
+
 - type: "colored"
 - color: [Color](#color)
 
 Uri:
+
 - type: "uri"
 
 HyperLink:
+
 - type: "hyperLink"
 - showText: string?
 - linkUri: string
 
 SimplexLink:
+
 - type: "simplexLink"
 - showText: string?
 - linkType: [SimplexLinkType](#simplexlinktype)
@@ -1992,34 +2216,38 @@ SimplexLink:
 - smpHosts: [string]
 
 Command:
+
 - type: "command"
 - commandStr: string
 
 Mention:
+
 - type: "mention"
 - memberName: string
 
 Email:
+
 - type: "email"
 
 Phone:
-- type: "phone"
 
+- type: "phone"
 
 ---
 
 ## FormattedText
 
 **Record type**:
+
 - format: [Format](#format)?
 - text: string
-
 
 ---
 
 ## FullGroupPreferences
 
 **Record type**:
+
 - timedMessages: [TimedMessagesGroupPreference](#timedmessagesgrouppreference)
 - directMessages: [RoleGroupPreference](#rolegrouppreference)
 - fullDelete: [GroupPreference](#grouppreference)
@@ -2032,12 +2260,12 @@ Phone:
 - sessions: [RoleGroupPreference](#rolegrouppreference)
 - commands: [[ChatBotCommand](#chatbotcommand)]
 
-
 ---
 
 ## FullPreferences
 
 **Record type**:
+
 - timedMessages: [TimedMessagesPreference](#timedmessagespreference)
 - fullDelete: [SimplePreference](#simplepreference)
 - reactions: [SimplePreference](#simplepreference)
@@ -2047,15 +2275,14 @@ Phone:
 - sessions: [SimplePreference](#simplepreference)
 - commands: [[ChatBotCommand](#chatbotcommand)]
 
-
 ---
 
 ## Group
 
 **Record type**:
+
 - groupInfo: [GroupInfo](#groupinfo)
 - members: [[GroupMember](#groupmember)]
-
 
 ---
 
@@ -2064,8 +2291,9 @@ Phone:
 **Discriminated union type**:
 
 MemberSupport:
+
 - type: "memberSupport"
-- groupMemberId_: int64?
+- groupMemberId\_: int64?
 
 **Syntax**:
 
@@ -2074,13 +2302,12 @@ MemberSupport:
 ```
 
 ```javascript
-'(_support' + (groupMemberId_ ? ':' + groupMemberId_ : '') + ')' // JavaScript
+"(_support" + (groupMemberId_ ? ":" + groupMemberId_ : "") + ")" // JavaScript
 ```
 
 ```python
 '(_support' + ((':' + str(groupMemberId_)) if groupMemberId_ is not None else '') + ')' # Python
 ```
-
 
 ---
 
@@ -2089,27 +2316,28 @@ MemberSupport:
 **Discriminated union type**:
 
 MemberSupport:
-- type: "memberSupport"
-- groupMember_: [GroupMember](#groupmember)?
 
+- type: "memberSupport"
+- groupMember\_: [GroupMember](#groupmember)?
 
 ---
 
 ## GroupDirectInvitation
 
 **Record type**:
-- groupDirectInvLink: string
-- fromGroupId_: int64?
-- fromGroupMemberId_: int64?
-- fromGroupMemberConnId_: int64?
-- groupDirectInvStartedConnection: bool
 
+- groupDirectInvLink: string
+- fromGroupId\_: int64?
+- fromGroupMemberId\_: int64?
+- fromGroupMemberConnId\_: int64?
+- groupDirectInvStartedConnection: bool
 
 ---
 
 ## GroupFeature
 
 **Enum type**:
+
 - "timedMessages"
 - "directMessages"
 - "fullDelete"
@@ -2121,21 +2349,21 @@ MemberSupport:
 - "history"
 - "sessions"
 
-
 ---
 
 ## GroupFeatureEnabled
 
 **Enum type**:
+
 - "on"
 - "off"
-
 
 ---
 
 ## GroupInfo
 
 **Record type**:
+
 - groupId: int64
 - localDisplayName: string
 - groupProfile: [GroupProfile](#groupprofile)
@@ -2156,28 +2384,27 @@ MemberSupport:
 - membersRequireAttention: int
 - viaGroupLinkUri: string?
 
-
 ---
 
 ## GroupInfoSummary
 
 **Record type**:
+
 - groupInfo: [GroupInfo](#groupinfo)
 - groupSummary: [GroupSummary](#groupsummary)
-
 
 ---
 
 ## GroupLink
 
 **Record type**:
+
 - userContactLinkId: int64
 - connLinkContact: [CreatedConnLink](#createdconnlink)
 - shortLinkDataSet: bool
 - shortLinkLargeDataSet: bool
 - groupLinkId: string
 - acceptMemberRole: [GroupMemberRole](#groupmemberrole)
-
 
 ---
 
@@ -2186,30 +2413,35 @@ MemberSupport:
 **Discriminated union type**:
 
 Ok:
+
 - type: "ok"
-- groupSLinkData_: [GroupShortLinkData](#groupshortlinkdata)?
+- groupSLinkData\_: [GroupShortLinkData](#groupshortlinkdata)?
 
 OwnLink:
+
 - type: "ownLink"
 - groupInfo: [GroupInfo](#groupinfo)
 
 ConnectingConfirmReconnect:
+
 - type: "connectingConfirmReconnect"
 
 ConnectingProhibit:
+
 - type: "connectingProhibit"
-- groupInfo_: [GroupInfo](#groupinfo)?
+- groupInfo\_: [GroupInfo](#groupinfo)?
 
 Known:
+
 - type: "known"
 - groupInfo: [GroupInfo](#groupinfo)
-
 
 ---
 
 ## GroupMember
 
 **Record type**:
+
 - groupMemberId: int64
 - groupId: int64
 - memberId: string
@@ -2230,41 +2462,41 @@ Known:
 - updatedAt: UTCTime
 - supportChat: [GroupSupportChat](#groupsupportchat)?
 
-
 ---
 
 ## GroupMemberAdmission
 
 **Record type**:
-- review: [MemberCriteria](#membercriteria)?
 
+- review: [MemberCriteria](#membercriteria)?
 
 ---
 
 ## GroupMemberCategory
 
 **Enum type**:
+
 - "user"
 - "invitee"
 - "host"
 - "pre"
 - "post"
 
-
 ---
 
 ## GroupMemberRef
 
 **Record type**:
+
 - groupMemberId: int64
 - profile: [Profile](#profile)
-
 
 ---
 
 ## GroupMemberRole
 
 **Enum type**:
+
 - "observer"
 - "author"
 - "member"
@@ -2272,20 +2504,20 @@ Known:
 - "admin"
 - "owner"
 
-
 ---
 
 ## GroupMemberSettings
 
 **Record type**:
-- showMessages: bool
 
+- showMessages: bool
 
 ---
 
 ## GroupMemberStatus
 
 **Enum type**:
+
 - "rejected"
 - "removed"
 - "left"
@@ -2302,20 +2534,20 @@ Known:
 - "complete"
 - "creator"
 
-
 ---
 
 ## GroupPreference
 
 **Record type**:
-- enable: [GroupFeatureEnabled](#groupfeatureenabled)
 
+- enable: [GroupFeatureEnabled](#groupfeatureenabled)
 
 ---
 
 ## GroupPreferences
 
 **Record type**:
+
 - timedMessages: [TimedMessagesGroupPreference](#timedmessagesgrouppreference)?
 - directMessages: [RoleGroupPreference](#rolegrouppreference)?
 - fullDelete: [GroupPreference](#grouppreference)?
@@ -2328,12 +2560,12 @@ Known:
 - sessions: [RoleGroupPreference](#rolegrouppreference)?
 - commands: [[ChatBotCommand](#chatbotcommand)]?
 
-
 ---
 
 ## GroupProfile
 
 **Record type**:
+
 - displayName: string
 - fullName: string
 - shortDescr: string?
@@ -2342,54 +2574,53 @@ Known:
 - groupPreferences: [GroupPreferences](#grouppreferences)?
 - memberAdmission: [GroupMemberAdmission](#groupmemberadmission)?
 
-
 ---
 
 ## GroupShortLinkData
 
 **Record type**:
-- groupProfile: [GroupProfile](#groupprofile)
 
+- groupProfile: [GroupProfile](#groupprofile)
 
 ---
 
 ## GroupSummary
 
 **Record type**:
-- currentMembers: int
 
+- currentMembers: int
 
 ---
 
 ## GroupSupportChat
 
 **Record type**:
+
 - chatTs: UTCTime
 - unread: int64
 - memberAttention: int64
 - mentions: int64
 - lastMsgFromMemberTs: UTCTime?
 
-
 ---
 
 ## HandshakeError
 
 **Enum type**:
+
 - "PARSE"
 - "IDENTITY"
 - "BAD_AUTH"
 - "BAD_SERVICE"
-
 
 ---
 
 ## InlineFileMode
 
 **Enum type**:
+
 - "offer"
 - "sent"
-
 
 ---
 
@@ -2398,20 +2629,23 @@ Known:
 **Discriminated union type**:
 
 Ok:
+
 - type: "ok"
-- contactSLinkData_: [ContactShortLinkData](#contactshortlinkdata)?
+- contactSLinkData\_: [ContactShortLinkData](#contactshortlinkdata)?
 
 OwnLink:
+
 - type: "ownLink"
 
 Connecting:
+
 - type: "connecting"
-- contact_: [Contact](#contact)?
+- contact\_: [Contact](#contact)?
 
 Known:
+
 - type: "known"
 - contact: [Contact](#contact)
-
 
 ---
 
@@ -2420,15 +2654,17 @@ Known:
 **Discriminated union type**:
 
 Contact:
+
 - type: "contact"
 - byContactId: int64
 
 User:
+
 - type: "user"
 
 Unknown:
-- type: "unknown"
 
+- type: "unknown"
 
 ---
 
@@ -2437,38 +2673,42 @@ Unknown:
 **Discriminated union type**:
 
 Page:
+
 - type: "page"
 
 Image:
+
 - type: "image"
 
 Video:
+
 - type: "video"
 - duration: int?
 
 Unknown:
+
 - type: "unknown"
 - tag: string
 - json: JSONObject
-
 
 ---
 
 ## LinkPreview
 
 **Record type**:
+
 - uri: string
 - title: string
 - description: string
 - image: string
 - content: [LinkContent](#linkcontent)?
 
-
 ---
 
 ## LocalProfile
 
 **Record type**:
+
 - profileId: int64
 - displayName: string
 - fullName: string
@@ -2479,14 +2719,13 @@ Unknown:
 - peerType: [ChatPeerType](#chatpeertype)?
 - localAlias: string
 
-
 ---
 
 ## MemberCriteria
 
 **Enum type**:
-- "all"
 
+- "all"
 
 ---
 
@@ -2497,21 +2736,23 @@ Connection link sent in a message - only short links are allowed.
 **Discriminated union type**:
 
 Contact:
+
 - type: "contact"
 - connLink: string
 - profile: [Profile](#profile)
 - business: bool
 
 Invitation:
+
 - type: "invitation"
 - invLink: string
 - profile: [Profile](#profile)
 
 Group:
+
 - type: "group"
 - connLink: string
 - groupProfile: [GroupProfile](#groupprofile)
-
 
 ---
 
@@ -2520,71 +2761,79 @@ Group:
 **Discriminated union type**:
 
 Text:
+
 - type: "text"
 - text: string
 
 Link:
+
 - type: "link"
 - text: string
 - preview: [LinkPreview](#linkpreview)
 
 Image:
+
 - type: "image"
 - text: string
 - image: string
 
 Video:
+
 - type: "video"
 - text: string
 - image: string
 - duration: int
 
 Voice:
+
 - type: "voice"
 - text: string
 - duration: int
 
 File:
+
 - type: "file"
 - text: string
 
 Report:
+
 - type: "report"
 - text: string
 - reason: [ReportReason](#reportreason)
 
 Chat:
+
 - type: "chat"
 - text: string
 - chatLink: [MsgChatLink](#msgchatlink)
 
 Unknown:
+
 - type: "unknown"
 - tag: string
 - text: string
 - json: JSONObject
-
 
 ---
 
 ## MsgDecryptError
 
 **Enum type**:
+
 - "ratchetHeader"
 - "tooManySkipped"
 - "ratchetEarlier"
 - "other"
 - "ratchetSync"
 
-
 ---
 
 ## MsgDirection
 
 **Enum type**:
+
 - "rcv"
 - "snd"
-
 
 ---
 
@@ -2593,30 +2842,33 @@ Unknown:
 **Discriminated union type**:
 
 MsgSkipped:
+
 - type: "msgSkipped"
 - fromMsgId: int64
 - toMsgId: int64
 
 MsgBadId:
+
 - type: "msgBadId"
 - msgId: int64
 
 MsgBadHash:
+
 - type: "msgBadHash"
 
 MsgDuplicate:
-- type: "msgDuplicate"
 
+- type: "msgDuplicate"
 
 ---
 
 ## MsgFilter
 
 **Enum type**:
+
 - "none"
 - "all"
 - "mentions"
-
 
 ---
 
@@ -2625,38 +2877,40 @@ MsgDuplicate:
 **Discriminated union type**:
 
 Emoji:
+
 - type: "emoji"
 - emoji: string
 
 Unknown:
+
 - type: "unknown"
 - tag: string
 - json: JSONObject
-
 
 ---
 
 ## MsgReceiptStatus
 
 **Enum type**:
+
 - "ok"
 - "badMsgHash"
-
 
 ---
 
 ## NewUser
 
 **Record type**:
+
 - profile: [Profile](#profile)?
 - pastTimestamp: bool
-
 
 ---
 
 ## NoteFolder
 
 **Record type**:
+
 - noteFolderId: int64
 - userId: int64
 - createdAt: UTCTime
@@ -2665,12 +2919,12 @@ Unknown:
 - favorite: bool
 - unread: bool
 
-
 ---
 
 ## PendingContactConnection
 
 **Record type**:
+
 - pccConnId: int64
 - pccAgentConnId: string
 - pccConnStatus: [ConnStatus](#connstatus)
@@ -2683,21 +2937,21 @@ Unknown:
 - createdAt: UTCTime
 - updatedAt: UTCTime
 
-
 ---
 
 ## PrefEnabled
 
 **Record type**:
+
 - forUser: bool
 - forContact: bool
-
 
 ---
 
 ## Preferences
 
 **Record type**:
+
 - timedMessages: [TimedMessagesPreference](#timedmessagespreference)?
 - fullDelete: [SimplePreference](#simplepreference)?
 - reactions: [SimplePreference](#simplepreference)?
@@ -2707,35 +2961,35 @@ Unknown:
 - sessions: [SimplePreference](#simplepreference)?
 - commands: [[ChatBotCommand](#chatbotcommand)]?
 
-
 ---
 
 ## PreparedContact
 
 **Record type**:
+
 - connLinkToConnect: [CreatedConnLink](#createdconnlink)
 - uiConnLinkType: [ConnectionMode](#connectionmode)
 - welcomeSharedMsgId: string?
 - requestSharedMsgId: string?
-
 
 ---
 
 ## PreparedGroup
 
 **Record type**:
+
 - connLinkToConnect: [CreatedConnLink](#createdconnlink)
 - connLinkPreparedConnection: bool
 - connLinkStartedConnection: bool
 - welcomeSharedMsgId: string?
 - requestSharedMsgId: string?
 
-
 ---
 
 ## Profile
 
 **Record type**:
+
 - displayName: string
 - fullName: string
 - shortDescr: string?
@@ -2744,7 +2998,6 @@ Unknown:
 - preferences: [Preferences](#preferences)?
 - peerType: [ChatPeerType](#chatpeertype)?
 
-
 ---
 
 ## ProxyClientError
@@ -2752,17 +3005,19 @@ Unknown:
 **Discriminated union type**:
 
 ProtocolError:
+
 - type: "protocolError"
 - protocolErr: [ErrorType](#errortype)
 
 UnexpectedResponse:
+
 - type: "unexpectedResponse"
 - responseStr: string
 
 ResponseError:
+
 - type: "responseError"
 - responseErr: [ErrorType](#errortype)
-
 
 ---
 
@@ -2771,19 +3026,22 @@ ResponseError:
 **Discriminated union type**:
 
 PROTOCOL:
+
 - type: "PROTOCOL"
 - protocolErr: [ErrorType](#errortype)
 
 BROKER:
+
 - type: "BROKER"
 - brokerErr: [BrokerErrorType](#brokererrortype)
 
 BASIC_AUTH:
+
 - type: "BASIC_AUTH"
 
 NO_SESSION:
-- type: "NO_SESSION"
 
+- type: "NO_SESSION"
 
 ---
 
@@ -2792,69 +3050,84 @@ NO_SESSION:
 **Discriminated union type**:
 
 Internal:
+
 - type: "internal"
 - internalErr: string
 
 Identity:
+
 - type: "identity"
 
 NoLocalAddress:
+
 - type: "noLocalAddress"
 
 NewController:
+
 - type: "newController"
 
 NotDiscovered:
+
 - type: "notDiscovered"
 
 TLSStartFailed:
+
 - type: "tLSStartFailed"
 
 Exception:
+
 - type: "exception"
 - exception: string
 
 CtrlAuth:
+
 - type: "ctrlAuth"
 
 CtrlNotFound:
+
 - type: "ctrlNotFound"
 
 CtrlError:
+
 - type: "ctrlError"
 - ctrlErr: string
 
 Invitation:
+
 - type: "invitation"
 
 Version:
+
 - type: "version"
 
 Encrypt:
+
 - type: "encrypt"
 
 Decrypt:
+
 - type: "decrypt"
 
 BlockSize:
+
 - type: "blockSize"
 
 Syntax:
+
 - type: "syntax"
 - syntaxErr: string
-
 
 ---
 
 ## RatchetSyncState
 
 **Enum type**:
+
 - "ok"
 - "allowed"
 - "required"
 - "started"
 - "agreed"
-
 
 ---
 
@@ -2863,20 +3136,23 @@ Syntax:
 **Discriminated union type**:
 
 SwitchQueue:
+
 - type: "switchQueue"
 - phase: [SwitchPhase](#switchphase)
 
 RatchetSync:
+
 - type: "ratchetSync"
 - syncStatus: [RatchetSyncState](#ratchetsyncstate)
 
 VerificationCodeReset:
+
 - type: "verificationCodeReset"
 
 PqEnabled:
+
 - type: "pqEnabled"
 - enabled: bool
-
 
 ---
 
@@ -2885,38 +3161,40 @@ PqEnabled:
 **Discriminated union type**:
 
 ContactDeleted:
+
 - type: "contactDeleted"
 
 ProfileUpdated:
+
 - type: "profileUpdated"
 - fromProfile: [Profile](#profile)
 - toProfile: [Profile](#profile)
 
 GroupInvLinkReceived:
+
 - type: "groupInvLinkReceived"
 - groupProfile: [GroupProfile](#groupprofile)
-
 
 ---
 
 ## RcvFileDescr
 
 **Record type**:
+
 - fileDescrId: int64
 - fileDescrText: string
 - fileDescrPartNo: int
 - fileDescrComplete: bool
-
 
 ---
 
 ## RcvFileInfo
 
 **Record type**:
+
 - filePath: string
 - connId: int64?
 - agentConnId: string?
-
 
 ---
 
@@ -2925,30 +3203,35 @@ GroupInvLinkReceived:
 **Discriminated union type**:
 
 New:
+
 - type: "new"
 
 Accepted:
+
 - type: "accepted"
 - fileInfo: [RcvFileInfo](#rcvfileinfo)
 
 Connected:
+
 - type: "connected"
 - fileInfo: [RcvFileInfo](#rcvfileinfo)
 
 Complete:
+
 - type: "complete"
 - fileInfo: [RcvFileInfo](#rcvfileinfo)
 
 Cancelled:
-- type: "cancelled"
-- fileInfo_: [RcvFileInfo](#rcvfileinfo)?
 
+- type: "cancelled"
+- fileInfo\_: [RcvFileInfo](#rcvfileinfo)?
 
 ---
 
 ## RcvFileTransfer
 
 **Record type**:
+
 - fileId: int64
 - xftpRcvFile: [XFTPRcvFile](#xftprcvfile)?
 - fileInvitation: [FileInvitation](#fileinvitation)
@@ -2960,7 +3243,6 @@ Cancelled:
 - grpMemberId: int64?
 - cryptoArgs: [CryptoFileArgs](#cryptofileargs)?
 
-
 ---
 
 ## RcvGroupEvent
@@ -2968,90 +3250,105 @@ Cancelled:
 **Discriminated union type**:
 
 MemberAdded:
+
 - type: "memberAdded"
 - groupMemberId: int64
 - profile: [Profile](#profile)
 
 MemberConnected:
+
 - type: "memberConnected"
 
 MemberAccepted:
+
 - type: "memberAccepted"
 - groupMemberId: int64
 - profile: [Profile](#profile)
 
 UserAccepted:
+
 - type: "userAccepted"
 
 MemberLeft:
+
 - type: "memberLeft"
 
 MemberRole:
+
 - type: "memberRole"
 - groupMemberId: int64
 - profile: [Profile](#profile)
 - role: [GroupMemberRole](#groupmemberrole)
 
 MemberBlocked:
+
 - type: "memberBlocked"
 - groupMemberId: int64
 - profile: [Profile](#profile)
 - blocked: bool
 
 UserRole:
+
 - type: "userRole"
 - role: [GroupMemberRole](#groupmemberrole)
 
 MemberDeleted:
+
 - type: "memberDeleted"
 - groupMemberId: int64
 - profile: [Profile](#profile)
 
 UserDeleted:
+
 - type: "userDeleted"
 
 GroupDeleted:
+
 - type: "groupDeleted"
 
 GroupUpdated:
+
 - type: "groupUpdated"
 - groupProfile: [GroupProfile](#groupprofile)
 
 InvitedViaGroupLink:
+
 - type: "invitedViaGroupLink"
 
 MemberCreatedContact:
+
 - type: "memberCreatedContact"
 
 MemberProfileUpdated:
+
 - type: "memberProfileUpdated"
 - fromProfile: [Profile](#profile)
 - toProfile: [Profile](#profile)
 
 NewMemberPendingReview:
-- type: "newMemberPendingReview"
 
+- type: "newMemberPendingReview"
 
 ---
 
 ## ReportReason
 
 **Enum type**:
+
 - "spam"
 - "content"
 - "community"
 - "profile"
 - "other"
 
-
 ---
 
 ## RoleGroupPreference
 
 **Record type**:
+
 - enable: [GroupFeatureEnabled](#groupfeatureenabled)
 - role: [GroupMemberRole](#groupmemberrole)?
-
 
 ---
 
@@ -3060,67 +3357,73 @@ NewMemberPendingReview:
 **Discriminated union type**:
 
 A_MESSAGE:
+
 - type: "A_MESSAGE"
 
 A_PROHIBITED:
+
 - type: "A_PROHIBITED"
 - prohibitedErr: string
 
 A_VERSION:
+
 - type: "A_VERSION"
 
 A_LINK:
+
 - type: "A_LINK"
 - linkErr: string
 
 A_CRYPTO:
+
 - type: "A_CRYPTO"
 - cryptoErr: [AgentCryptoError](#agentcryptoerror)
 
 A_DUPLICATE:
+
 - type: "A_DUPLICATE"
 
 A_QUEUE:
+
 - type: "A_QUEUE"
 - queueErr: string
-
 
 ---
 
 ## SecurityCode
 
 **Record type**:
+
 - securityCode: string
 - verifiedAt: UTCTime
-
 
 ---
 
 ## SimplePreference
 
 **Record type**:
-- allow: [FeatureAllowed](#featureallowed)
 
+- allow: [FeatureAllowed](#featureallowed)
 
 ---
 
 ## SimplexLinkType
 
 **Enum type**:
+
 - "contact"
 - "invitation"
 - "group"
 - "channel"
-
 
 ---
 
 ## SndCIStatusProgress
 
 **Enum type**:
+
 - "partial"
 - "complete"
-
 
 ---
 
@@ -3129,19 +3432,21 @@ A_QUEUE:
 **Discriminated union type**:
 
 SwitchQueue:
+
 - type: "switchQueue"
 - phase: [SwitchPhase](#switchphase)
 - member: [GroupMemberRef](#groupmemberref)?
 
 RatchetSync:
+
 - type: "ratchetSync"
 - syncStatus: [RatchetSyncState](#ratchetsyncstate)
 - member: [GroupMemberRef](#groupmemberref)?
 
 PqEnabled:
+
 - type: "pqEnabled"
 - enabled: bool
-
 
 ---
 
@@ -3150,38 +3455,45 @@ PqEnabled:
 **Discriminated union type**:
 
 Auth:
+
 - type: "auth"
 
 Quota:
+
 - type: "quota"
 
 Expired:
+
 - type: "expired"
 
 Relay:
+
 - type: "relay"
 - srvError: [SrvError](#srverror)
 
 Proxy:
+
 - type: "proxy"
 - proxyServer: string
 - srvError: [SrvError](#srverror)
 
 ProxyRelay:
+
 - type: "proxyRelay"
 - proxyServer: string
 - srvError: [SrvError](#srverror)
 
 Other:
+
 - type: "other"
 - sndError: string
-
 
 ---
 
 ## SndFileTransfer
 
 **Record type**:
+
 - fileId: int64
 - fileName: string
 - filePath: string
@@ -3195,7 +3507,6 @@ Other:
 - fileDescrId: int64?
 - fileInline: [InlineFileMode](#inlinefilemode)?
 
-
 ---
 
 ## SndGroupEvent
@@ -3203,41 +3514,48 @@ Other:
 **Discriminated union type**:
 
 MemberRole:
+
 - type: "memberRole"
 - groupMemberId: int64
 - profile: [Profile](#profile)
 - role: [GroupMemberRole](#groupmemberrole)
 
 MemberBlocked:
+
 - type: "memberBlocked"
 - groupMemberId: int64
 - profile: [Profile](#profile)
 - blocked: bool
 
 UserRole:
+
 - type: "userRole"
 - role: [GroupMemberRole](#groupmemberrole)
 
 MemberDeleted:
+
 - type: "memberDeleted"
 - groupMemberId: int64
 - profile: [Profile](#profile)
 
 UserLeft:
+
 - type: "userLeft"
 
 GroupUpdated:
+
 - type: "groupUpdated"
 - groupProfile: [GroupProfile](#groupprofile)
 
 MemberAccepted:
+
 - type: "memberAccepted"
 - groupMemberId: int64
 - profile: [Profile](#profile)
 
 UserPendingReview:
-- type: "userPendingReview"
 
+- type: "userPendingReview"
 
 ---
 
@@ -3246,15 +3564,17 @@ UserPendingReview:
 **Discriminated union type**:
 
 Host:
+
 - type: "host"
 
 Version:
+
 - type: "version"
 
 Other:
+
 - type: "other"
 - srvError: string
-
 
 ---
 
@@ -3263,260 +3583,327 @@ Other:
 **Discriminated union type**:
 
 DuplicateName:
+
 - type: "duplicateName"
 
 UserNotFound:
+
 - type: "userNotFound"
 - userId: int64
 
 UserNotFoundByName:
+
 - type: "userNotFoundByName"
 - contactName: string
 
 UserNotFoundByContactId:
+
 - type: "userNotFoundByContactId"
 - contactId: int64
 
 UserNotFoundByGroupId:
+
 - type: "userNotFoundByGroupId"
 - groupId: int64
 
 UserNotFoundByFileId:
+
 - type: "userNotFoundByFileId"
 - fileId: int64
 
 UserNotFoundByContactRequestId:
+
 - type: "userNotFoundByContactRequestId"
 - contactRequestId: int64
 
 ContactNotFound:
+
 - type: "contactNotFound"
 - contactId: int64
 
 ContactNotFoundByName:
+
 - type: "contactNotFoundByName"
 - contactName: string
 
 ContactNotFoundByMemberId:
+
 - type: "contactNotFoundByMemberId"
 - groupMemberId: int64
 
 ContactNotReady:
+
 - type: "contactNotReady"
 - contactName: string
 
 DuplicateContactLink:
+
 - type: "duplicateContactLink"
 
 UserContactLinkNotFound:
+
 - type: "userContactLinkNotFound"
 
 ContactRequestNotFound:
+
 - type: "contactRequestNotFound"
 - contactRequestId: int64
 
 ContactRequestNotFoundByName:
+
 - type: "contactRequestNotFoundByName"
 - contactName: string
 
 InvalidContactRequestEntity:
+
 - type: "invalidContactRequestEntity"
 - contactRequestId: int64
 
 InvalidBusinessChatContactRequest:
+
 - type: "invalidBusinessChatContactRequest"
 
 GroupNotFound:
+
 - type: "groupNotFound"
 - groupId: int64
 
 GroupNotFoundByName:
+
 - type: "groupNotFoundByName"
 - groupName: string
 
 GroupMemberNameNotFound:
+
 - type: "groupMemberNameNotFound"
 - groupId: int64
 - groupMemberName: string
 
 GroupMemberNotFound:
+
 - type: "groupMemberNotFound"
 - groupMemberId: int64
 
 GroupHostMemberNotFound:
+
 - type: "groupHostMemberNotFound"
 - groupId: int64
 
 GroupMemberNotFoundByMemberId:
+
 - type: "groupMemberNotFoundByMemberId"
 - memberId: string
 
 MemberContactGroupMemberNotFound:
+
 - type: "memberContactGroupMemberNotFound"
 - contactId: int64
 
 GroupWithoutUser:
+
 - type: "groupWithoutUser"
 
 DuplicateGroupMember:
+
 - type: "duplicateGroupMember"
 
 GroupAlreadyJoined:
+
 - type: "groupAlreadyJoined"
 
 GroupInvitationNotFound:
+
 - type: "groupInvitationNotFound"
 
 NoteFolderAlreadyExists:
+
 - type: "noteFolderAlreadyExists"
 - noteFolderId: int64
 
 NoteFolderNotFound:
+
 - type: "noteFolderNotFound"
 - noteFolderId: int64
 
 UserNoteFolderNotFound:
+
 - type: "userNoteFolderNotFound"
 
 SndFileNotFound:
+
 - type: "sndFileNotFound"
 - fileId: int64
 
 SndFileInvalid:
+
 - type: "sndFileInvalid"
 - fileId: int64
 
 RcvFileNotFound:
+
 - type: "rcvFileNotFound"
 - fileId: int64
 
 RcvFileDescrNotFound:
+
 - type: "rcvFileDescrNotFound"
 - fileId: int64
 
 FileNotFound:
+
 - type: "fileNotFound"
 - fileId: int64
 
 RcvFileInvalid:
+
 - type: "rcvFileInvalid"
 - fileId: int64
 
 RcvFileInvalidDescrPart:
+
 - type: "rcvFileInvalidDescrPart"
 
 LocalFileNoTransfer:
+
 - type: "localFileNoTransfer"
 - fileId: int64
 
 SharedMsgIdNotFoundByFileId:
+
 - type: "sharedMsgIdNotFoundByFileId"
 - fileId: int64
 
 FileIdNotFoundBySharedMsgId:
+
 - type: "fileIdNotFoundBySharedMsgId"
 - sharedMsgId: string
 
 SndFileNotFoundXFTP:
+
 - type: "sndFileNotFoundXFTP"
 - agentSndFileId: string
 
 RcvFileNotFoundXFTP:
+
 - type: "rcvFileNotFoundXFTP"
 - agentRcvFileId: string
 
 ConnectionNotFound:
+
 - type: "connectionNotFound"
 - agentConnId: string
 
 ConnectionNotFoundById:
+
 - type: "connectionNotFoundById"
 - connId: int64
 
 ConnectionNotFoundByMemberId:
+
 - type: "connectionNotFoundByMemberId"
 - groupMemberId: int64
 
 PendingConnectionNotFound:
+
 - type: "pendingConnectionNotFound"
 - connId: int64
 
 IntroNotFound:
+
 - type: "introNotFound"
 
 UniqueID:
+
 - type: "uniqueID"
 
 LargeMsg:
+
 - type: "largeMsg"
 
 InternalError:
+
 - type: "internalError"
 - message: string
 
 DBException:
+
 - type: "dBException"
 - message: string
 
 DBBusyError:
+
 - type: "dBBusyError"
 - message: string
 
 BadChatItem:
+
 - type: "badChatItem"
 - itemId: int64
 - itemTs: UTCTime?
 
 ChatItemNotFound:
+
 - type: "chatItemNotFound"
 - itemId: int64
 
 ChatItemNotFoundByText:
+
 - type: "chatItemNotFoundByText"
 - text: string
 
 ChatItemSharedMsgIdNotFound:
+
 - type: "chatItemSharedMsgIdNotFound"
 - sharedMsgId: string
 
 ChatItemNotFoundByFileId:
+
 - type: "chatItemNotFoundByFileId"
 - fileId: int64
 
 ChatItemNotFoundByContactId:
+
 - type: "chatItemNotFoundByContactId"
 - contactId: int64
 
 ChatItemNotFoundByGroupId:
+
 - type: "chatItemNotFoundByGroupId"
 - groupId: int64
 
 ProfileNotFound:
+
 - type: "profileNotFound"
 - profileId: int64
 
 DuplicateGroupLink:
+
 - type: "duplicateGroupLink"
 - groupInfo: [GroupInfo](#groupinfo)
 
 GroupLinkNotFound:
+
 - type: "groupLinkNotFound"
 - groupInfo: [GroupInfo](#groupinfo)
 
 HostMemberIdNotFound:
+
 - type: "hostMemberIdNotFound"
 - groupId: int64
 
 ContactNotFoundByFileId:
+
 - type: "contactNotFoundByFileId"
 - fileId: int64
 
 NoGroupSndStatus:
+
 - type: "noGroupSndStatus"
 - itemId: int64
 - groupMemberId: int64
 
 DuplicateGroupMessage:
+
 - type: "duplicateGroupMessage"
 - groupId: int64
 - sharedMsgId: string
@@ -3524,69 +3911,78 @@ DuplicateGroupMessage:
 - forwardedByGroupMemberId: int64?
 
 RemoteHostNotFound:
+
 - type: "remoteHostNotFound"
 - remoteHostId: int64
 
 RemoteHostUnknown:
+
 - type: "remoteHostUnknown"
 
 RemoteHostDuplicateCA:
+
 - type: "remoteHostDuplicateCA"
 
 RemoteCtrlNotFound:
+
 - type: "remoteCtrlNotFound"
 - remoteCtrlId: int64
 
 RemoteCtrlDuplicateCA:
+
 - type: "remoteCtrlDuplicateCA"
 
 ProhibitedDeleteUser:
+
 - type: "prohibitedDeleteUser"
 - userId: int64
 - contactId: int64
 
 OperatorNotFound:
+
 - type: "operatorNotFound"
 - serverOperatorId: int64
 
 UsageConditionsNotFound:
+
 - type: "usageConditionsNotFound"
 
 InvalidQuote:
+
 - type: "invalidQuote"
 
 InvalidMention:
-- type: "invalidMention"
 
+- type: "invalidMention"
 
 ---
 
 ## SwitchPhase
 
 **Enum type**:
+
 - "started"
 - "confirmed"
 - "secured"
 - "completed"
-
 
 ---
 
 ## TimedMessagesGroupPreference
 
 **Record type**:
+
 - enable: [GroupFeatureEnabled](#groupfeatureenabled)
 - ttl: int?
-
 
 ---
 
 ## TimedMessagesPreference
 
 **Record type**:
+
 - allow: [FeatureAllowed](#featureallowed)
 - ttl: int?
-
 
 ---
 
@@ -3595,39 +3991,45 @@ InvalidMention:
 **Discriminated union type**:
 
 BadBlock:
+
 - type: "badBlock"
 
 Version:
+
 - type: "version"
 
 LargeMsg:
+
 - type: "largeMsg"
 
 BadSession:
+
 - type: "badSession"
 
 NoServerAuth:
+
 - type: "noServerAuth"
 
 Handshake:
+
 - type: "handshake"
 - handshakeErr: [HandshakeError](#handshakeerror)
-
 
 ---
 
 ## UIColorMode
 
 **Enum type**:
+
 - "light"
 - "dark"
-
 
 ---
 
 ## UIColors
 
 **Record type**:
+
 - accent: string?
 - accentVariant: string?
 - secondary: string?
@@ -3641,40 +4043,40 @@ Handshake:
 - receivedMessage: string?
 - receivedReply: string?
 
-
 ---
 
 ## UIThemeEntityOverride
 
 **Record type**:
+
 - mode: [UIColorMode](#uicolormode)
 - wallpaper: [ChatWallpaper](#chatwallpaper)?
 - colors: [UIColors](#uicolors)
-
 
 ---
 
 ## UIThemeEntityOverrides
 
 **Record type**:
+
 - light: [UIThemeEntityOverride](#uithemeentityoverride)?
 - dark: [UIThemeEntityOverride](#uithemeentityoverride)?
-
 
 ---
 
 ## UpdatedMessage
 
 **Record type**:
+
 - msgContent: [MsgContent](#msgcontent)
 - mentions: {string : int64}
-
 
 ---
 
 ## User
 
 **Record type**:
+
 - userId: int64
 - agentUserId: int64
 - userContactId: int64
@@ -3691,39 +4093,39 @@ Handshake:
 - userMemberProfileUpdatedAt: UTCTime?
 - uiThemes: [UIThemeEntityOverrides](#uithemeentityoverrides)?
 
-
 ---
 
 ## UserContact
 
 **Record type**:
+
 - userContactLinkId: int64
 - connReqContact: string
 - groupId: int64?
-
 
 ---
 
 ## UserContactLink
 
 **Record type**:
+
 - userContactLinkId: int64
 - connLinkContact: [CreatedConnLink](#createdconnlink)
 - shortLinkDataSet: bool
 - shortLinkLargeDataSet: bool
 - addressSettings: [AddressSettings](#addresssettings)
 
-
 ---
 
 ## UserContactRequest
 
 **Record type**:
+
 - contactRequestId: int64
 - agentInvitationId: string
-- contactId_: int64?
-- businessGroupId_: int64?
-- userContactLinkId_: int64?
+- contactId\_: int64?
+- businessGroupId\_: int64?
+- userContactLinkId\_: int64?
 - cReqChatVRange: [VersionRange](#versionrange)
 - localDisplayName: string
 - profileId: int64
@@ -3735,43 +4137,42 @@ Handshake:
 - welcomeSharedMsgId: string?
 - requestSharedMsgId: string?
 
-
 ---
 
 ## UserInfo
 
 **Record type**:
+
 - user: [User](#user)
 - unreadCount: int
-
 
 ---
 
 ## UserProfileUpdateSummary
 
 **Record type**:
+
 - updateSuccesses: int
 - updateFailures: int
 - changedContacts: [[Contact](#contact)]
-
 
 ---
 
 ## UserPwdHash
 
 **Record type**:
+
 - hash: string
 - salt: string
-
 
 ---
 
 ## VersionRange
 
 **Record type**:
+
 - minVersion: int
 - maxVersion: int
-
 
 ---
 
@@ -3780,72 +4181,88 @@ Handshake:
 **Discriminated union type**:
 
 BLOCK:
+
 - type: "BLOCK"
 
 SESSION:
+
 - type: "SESSION"
 
 HANDSHAKE:
+
 - type: "HANDSHAKE"
 
 CMD:
+
 - type: "CMD"
 - cmdErr: [CommandError](#commanderror)
 
 AUTH:
+
 - type: "AUTH"
 
 BLOCKED:
+
 - type: "BLOCKED"
 - blockInfo: [BlockingInfo](#blockinginfo)
 
 SIZE:
+
 - type: "SIZE"
 
 QUOTA:
+
 - type: "QUOTA"
 
 DIGEST:
+
 - type: "DIGEST"
 
 CRYPTO:
+
 - type: "CRYPTO"
 
 NO_FILE:
+
 - type: "NO_FILE"
 
 HAS_FILE:
+
 - type: "HAS_FILE"
 
 FILE_IO:
+
 - type: "FILE_IO"
 
 TIMEOUT:
+
 - type: "TIMEOUT"
 
 INTERNAL:
+
 - type: "INTERNAL"
 
-DUPLICATE_:
-- type: "DUPLICATE_"
+DUPLICATE\_:
 
+- type: "DUPLICATE\_"
 
 ---
 
 ## XFTPRcvFile
 
 **Record type**:
+
 - rcvFileDescription: [RcvFileDescr](#rcvfiledescr)
 - agentRcvFileId: string?
 - agentRcvFileDeleted: bool
 - userApprovedRelays: bool
-
 
 ---
 
 ## XFTPSndFile
 
 **Record type**:
+
 - agentSndFileId: string
 - privateSndFileDescr: string?
 - agentSndFileDeleted: bool

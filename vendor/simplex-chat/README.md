@@ -1,3 +1,7 @@
+This is from [simplex-chat/simplex-chat/packages/simplex-chat-client/typescript](https://github.com/simplex-chat/simplex-chat/tree/stable/packages/simplex-chat-client/typescript), but vendored and updated
+
+Original README:
+
 # SimpleX Chat JavaScript client
 
 This is a TypeScript library that defines WebSocket API client for [SimpleX Chat terminal CLI](https://github.com/simplex-chat/simplex-chat/blob/stable/docs/CLI.md) that should be run as a WebSockets server on any port:

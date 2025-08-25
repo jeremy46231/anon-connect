@@ -1,14 +1,11 @@
-import { ChatClient } from 'simplex-chat/src/index'
-import { ChatType, MsgContent, Profile } from 'simplex-chat/src/command'
 import {
+  ChatClient,
+  ChatType,
+  Profile,
   ChatInfoType,
   ChatResponse,
   ciContentText,
-  type User,
-  type CRChatCmdError,
-  type Contact,
-  ChatError,
-} from 'simplex-chat/src/response'
+} from 'simplex-chat'
 
 const simplex = await ChatClient.create('ws://localhost:5225')
 const user = await simplex.apiGetActiveUser()
@@ -31,7 +28,6 @@ function couldBeIncognito(profile: Profile) {
 
   return true
 }
-
 
 async function handleChatResponse(response: ChatResponse, chat = simplex) {
   switch (response.type) {
@@ -112,7 +108,10 @@ async function handleChatResponse(response: ChatResponse, chat = simplex) {
             // const res = await chat.apiConnect(link)
             // console.log('connected', res)
             const plan = await chat.apiConnectPlan(user!.userId, link)
-            if (plan.connectionPlan.type !== 'contactAddress' && plan.connectionPlan.type !== 'invitationLink') {
+            if (
+              plan.connectionPlan.type !== 'contactAddress' &&
+              plan.connectionPlan.type !== 'invitationLink'
+            ) {
               let errorText = 'This is an invalid link type.'
               if (plan.connectionPlan.type === 'groupLink') {
                 errorText = 'This is a group link, not a direct link.'

@@ -1,2 +1,1 @@
-import type { CRChatCmdError, CRConnectionPlan } from 'simplex-chat/src/response'
-
+import type { CRChatCmdError, CRConnectionPlan } from 'simplex-chat'

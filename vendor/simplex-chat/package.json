@@ -1,11 +1,10 @@
 {
-  "name": "simplex-chat",
-  "version": "0.2.1",
+  "name": "simplex-chat-fork",
+  "version": "0.2.1-fork",
   "description": "SimpleX Chat client",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.ts",
   "files": [
-    "dist"
+    "src"
   ],
   "scripts": {
     "test": "npm run prettier:check && npm run eslint && jest --coverage",

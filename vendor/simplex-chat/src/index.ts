@@ -1,2 +1,4 @@
 import "./websocket"
-export {ChatClient} from "./client"
+export * from "./client"
+export * from "./command"
+export * from "./response"

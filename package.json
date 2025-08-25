@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "build-simplex": "BUILD_SIMPLEX=1 bun run scripts/simplex.ts",
+    "simplex": "simplex-chat -d ./simplex/database/db -p 5225 -y --create-bot-display-name Anon"
+  },
+  "dependencies": {
+    "@slack/bolt": "^4.4.0",
+    "@types/bun": "^1.2.20",
+    "simplex-chat": "./simplex/simplex-chat/packages/simplex-chat-client/typescript"
+  }
+}

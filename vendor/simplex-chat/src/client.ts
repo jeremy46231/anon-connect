@@ -188,8 +188,8 @@ export class ChatClient {
     throw new ChatCommandError("error deleting chat item", r)
   }
 
-  async apiCreateLink(incognito = false): Promise<string> {
-    const r = await this.sendChatCommand({type: "addContact", incognito})
+  async apiCreateLink(): Promise<string> {
+    const r = await this.sendChatCommand({type: "addContact"})
     if (r.type === "invitation") {
       const link = r.connLinkInvitation
       return link.connShortLink || link.connFullLink
@@ -197,8 +197,8 @@ export class ChatClient {
     throw new ChatCommandError("error creating link", r)
   }
 
-  async apiConnect(connReq: string, incognito = false): Promise<ConnReqType> {
-    const r = await this.sendChatCommand({type: "connect", connReq, incognito})
+  async apiConnect(connReq: string): Promise<ConnReqType> {
+    const r = await this.sendChatCommand({type: "connect", connReq})
     switch (r.type) {
       case "sentConfirmation":
         return ConnReqType.Invitation

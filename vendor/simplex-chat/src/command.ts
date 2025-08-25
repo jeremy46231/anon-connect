@@ -476,13 +476,11 @@ export interface APIVerifyGroupMember extends IChatCommand {
 
 export interface AddContact extends IChatCommand {
   type: "addContact"
-  incognito?: boolean
 }
 
 export interface Connect extends IChatCommand {
   type: "connect"
   connReq: string
-  incognito?: boolean
 }
 
 export interface ConnectSimplex extends IChatCommand {
@@ -766,9 +764,9 @@ export function cmdString(cmd: ChatCommand): string {
     case "apiVerifyGroupMember":
       return `/_verify code #${cmd.groupId} ${cmd.groupMemberId}${maybe(cmd.connectionCode)}`
     case "addContact":
-      return "/connect" + (cmd.incognito ? " incognito" : "")
+      return "/connect"
     case "connect":
-      return `/connect${cmd.incognito ? " incognito" : ""} ${cmd.connReq}`
+      return `/connect ${cmd.connReq}`
     case "connectSimplex":
       return "/simplex"
     case "createMyAddress":

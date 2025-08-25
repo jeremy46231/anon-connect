@@ -203,12 +203,34 @@ export class ChatClient {
     throw new ChatCommandError("error creating link", r)
   }
 
+  async apiAddContact(userId: number, incognito = false) {
+    const r = await this.sendChatCommand({type: "apiAddContact", userId, incognito})
+    if (r.type === "invitation") {
+      const link = r.connLinkInvitation
+      return link.connShortLink || link.connFullLink
+    }
+    throw new ChatCommandError("error creating link", r)
+  }
+
   async apiConnect(connReq: string): Promise<ConnReqType> {
     const r = await this.sendChatCommand({type: "connect", connReq})
     switch (r.type) {
       case "sentConfirmation":
         return ConnReqType.Invitation
       case "sentInvitation":
+        return ConnReqType.Contact
+      default:
+        throw new ChatCommandError("connection error", r)
+    }
+  }
+
+  async apiConnectLink(userId: number, connLink: string): Promise<ConnReqType> {
+    const r = await this.sendChatCommand({type: "apiConnect", userId, connLink})
+    switch (r.type) {
+      case "sentConfirmation":
+        return ConnReqType.Invitation
+      case "sentInvitation":
+      case "contactAlreadyExists":
         return ConnReqType.Contact
       default:
         throw new ChatCommandError("connection error", r)
@@ -253,6 +275,12 @@ export class ChatClient {
     const r = await this.sendChatCommand({type: "apiSetContactAlias", contactId, localAlias})
     if (r.type === "contactAliasUpdated") return r.toContact
     throw new ChatCommandError("error updating contact alias", r)
+  }
+
+  async apiSetContactPrefs(contactId: number, preferences: CC.Preferences): Promise<CR.Contact> {
+    const r = await this.sendChatCommand({type: "apiSetContactPrefs", contactId, preferences})
+    if (r.type === "contactPrefsUpdated") return r.toContact
+    throw new ChatCommandError("error setting contact preferences", r)
   }
 
   async apiCreateUserAddress(): Promise<string> {

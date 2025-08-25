@@ -3,6 +3,7 @@ export type ChatCommand =
   | CreateActiveUser
   | ListUsers
   | APISetActiveUser
+  | APISetContactPrefs
   | APIHideUser
   | APIUnhideUser
   | APIMuteUser
@@ -49,6 +50,8 @@ export type ChatCommand =
   | APIGetGroupMemberCode
   | APIVerifyContact
   | APIVerifyGroupMember
+  | APIAddContact
+  | APIConnect
   | AddContact
   | Connect
   | ConnectSimplex
@@ -101,6 +104,7 @@ type ChatCommandTag =
   | "createActiveUser"
   | "listUsers"
   | "apiSetActiveUser"
+  | "apiSetContactPrefs"
   | "setActiveUser"
   | "apiHideUser"
   | "apiUnhideUser"
@@ -148,6 +152,8 @@ type ChatCommandTag =
   | "apiGetGroupMemberCode"
   | "apiVerifyContact"
   | "apiVerifyGroupMember"
+  | "apiAddContact"
+  | "apiConnect"
   | "addContact"
   | "connect"
   | "connectSimplex"
@@ -188,6 +194,12 @@ export interface APISetActiveUser extends IChatCommand {
   type: "apiSetActiveUser"
   userId: number
   viewPwd?: string
+}
+
+export interface APISetContactPrefs extends IChatCommand {
+  type: "apiSetContactPrefs"
+  contactId: number
+  preferences: Preferences
 }
 
 export interface APIHideUser extends IChatCommand {
@@ -482,6 +494,18 @@ export interface APIVerifyGroupMember extends IChatCommand {
   connectionCode: string
 }
 
+export interface APIAddContact extends IChatCommand {
+  type: "apiAddContact"
+  userId: number
+  incognito?: boolean
+}
+
+export interface APIConnect extends IChatCommand {
+  type: "apiConnect"
+  userId: number
+  connLink: string
+}
+
 export interface AddContact extends IChatCommand {
   type: "addContact"
 }
@@ -667,6 +691,43 @@ interface GroupProfile {
   image?: string
 }
 
+export type FeatureAllowed = "always" | "yes" | "no"
+
+export interface SimplePreference {
+  allow: FeatureAllowed
+}
+
+export interface TimedMessagesPreference {
+  allow: FeatureAllowed
+  ttl?: number
+}
+
+export interface Preferences {
+  timedMessages?: TimedMessagesPreference
+  fullDelete?: SimplePreference
+  reactions?: SimplePreference
+  voice?: SimplePreference
+  files?: SimplePreference
+  calls?: SimplePreference
+  sessions?: SimplePreference
+  commands?: ChatBotCommand[]
+}
+
+export type ChatBotCommand = BotCommand | BotMenu
+
+export interface BotCommand {
+  type: "command"
+  keyword: string
+  label: string
+  params?: string
+}
+
+export interface BotMenu {
+  type: "menu"
+  label: string
+  commands: ChatBotCommand[]
+}
+
 export function cmdString(cmd: ChatCommand): string {
   switch (cmd.type) {
     case "showActiveUser":
@@ -679,6 +740,8 @@ export function cmdString(cmd: ChatCommand): string {
       return `/users`
     case "apiSetActiveUser":
       return `/_user ${cmd.userId}${maybeJSON(cmd.viewPwd)}`
+    case "apiSetContactPrefs":
+      return `/_set prefs @${cmd.contactId} ${JSON.stringify(cmd.preferences)}`
     case "apiHideUser":
       return `/_hide user ${cmd.userId} ${JSON.stringify(cmd.viewPwd)}`
     case "apiUnhideUser":
@@ -773,6 +836,10 @@ export function cmdString(cmd: ChatCommand): string {
       return `/_verify code @${cmd.contactId}${maybe(cmd.connectionCode)}`
     case "apiVerifyGroupMember":
       return `/_verify code #${cmd.groupId} ${cmd.groupMemberId}${maybe(cmd.connectionCode)}`
+    case "apiAddContact":
+      return `/_connect ${cmd.userId}${cmd.incognito ? " incognito=on" : ""}`
+    case "apiConnect":
+      return `/_connect ${cmd.userId} ${cmd.connLink}`
     case "addContact":
       return "/connect"
     case "connect":

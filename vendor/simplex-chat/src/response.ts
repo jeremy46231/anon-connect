@@ -21,6 +21,7 @@ export type ChatResponse =
   | CRCmdOk
   | CRUserContactLink
   | CRUserContactLinkUpdated
+  | CRContactPrefsUpdated
   | CRContactRequestRejected
   | CRUserProfile
   | CRUserProfileNoChange
@@ -118,6 +119,7 @@ type ChatResponseTag =
   | "cmdOk"
   | "userContactLink"
   | "userContactLinkUpdated"
+  | "contactPrefsUpdated"
   | "userContactLinkCreated"
   | "userContactLinkDeleted"
   | "contactRequestRejected"
@@ -357,6 +359,13 @@ export interface CRUserContactLinkUpdated extends CR {
   type: "userContactLinkUpdated"
   user: User
   contactLink: UserContactLink
+}
+
+export interface CRContactPrefsUpdated extends CR {
+  type: "contactPrefsUpdated"
+  user: User
+  fromContact: Contact
+  toContact: Contact
 }
 
 export interface CRContactRequestRejected extends CR {

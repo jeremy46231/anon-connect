@@ -127,7 +127,19 @@ async function handleChatResponse(response: ChatResponse, chat = simplex) {
             // const res = await chat.apiConnect(link)
             // console.log('connected', res)
             const plan = await connectPlan(link)
-            console.log('connected', plan)
+            if (plan.connectionPlan.type !== 'contactAddress' && plan.connectionPlan.type !== 'invitationLink') {
+              let errorText = 'This is an invalid link type.'
+              if (plan.connectionPlan.type === 'groupLink') {
+                errorText = 'This is a group link, not a direct link.'
+              }
+              await chat.apiSendTextMessage(
+                ChatType.Direct,
+                chatInfo.contact.contactId,
+                errorText
+              )
+              return
+            }
+            // the link is good
           }
         }
       }

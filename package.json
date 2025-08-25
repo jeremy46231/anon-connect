@@ -6,6 +6,6 @@
   "dependencies": {
     "@slack/bolt": "^4.4.0",
     "@types/bun": "^1.2.20",
-    "simplex-chat": "./simplex/simplex-chat/packages/simplex-chat-client/typescript"
+    "simplex-chat": "./vendor/simplex-chat/"
   }
 }

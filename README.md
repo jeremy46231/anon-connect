@@ -1,3 +1,5 @@
+# AnonConnect
+
 ```sh
 # Install the SimpleX CLI
 curl -o- https://raw.githubusercontent.com/simplex-chat/simplex-chat/stable/install.sh | bash

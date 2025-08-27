@@ -17,6 +17,8 @@ model Thread {
   id     String @id
   // The current state of the thread
   status String // "connecting", "connected", or "closed"
+  // A user ID, if available
+  userId String?
 
   // A thread can be part of one chat as thread1 OR thread2
   chatAsThread1 Chat? @relation("ChatToThread1")
@@ -26,8 +28,6 @@ model Thread {
 model Chat {
   id Int @id @default(autoincrement())
 
-  // --- This creates the explicit relationship ---
-
   // Relation to the first thread
   thread1   Thread @relation("ChatToThread1", fields: [thread1Id], references: [id])
   thread1Id String @unique // The foreign key, must be unique
@@ -35,4 +35,7 @@ model Chat {
   // Relation to the second thread
   thread2   Thread @relation("ChatToThread2", fields: [thread2Id], references: [id])
   thread2Id String @unique // The foreign key, must be unique
+
+  // Timestamp of the last message activity between the two threads
+  lastActive DateTime @default(now())
 }

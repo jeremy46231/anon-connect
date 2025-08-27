@@ -70,7 +70,14 @@ export class SimpleXBot extends AbstractService {
           //   'New chat created.'
           // )
           const threadId = `${this.name}|${contactId.toFixed()}`
-          this.emit('newThread', threadId)
+          // const userId = couldBeIncognito(response.contact.profile)
+          //   ? undefined
+          //   : ...
+          const userId = `${this.name}|${
+            response.contact.profile.displayName ||
+            response.contact.profile.fullName
+          }`
+          this.emit('newThread', threadId, userId)
         }
 
         return

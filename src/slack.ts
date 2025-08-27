@@ -34,12 +34,20 @@ export class SlackBot extends AbstractService {
       if (!('thread_ts' in message)) {
         // top-level message, new thread
         const threadId = `${this.name}|${message.channel}|${message.ts}`
-        this.emit('newThread', threadId)
+        const userId =
+          'user' in message && message.user
+            ? `${this.name}|${message.user}`
+            : undefined
+        this.emit('newThread', threadId, userId)
       } else {
         const threadId = `${this.name}|${message.channel}|${message.thread_ts}`
-        this.emit('message', {
-          text: message.text || ''
-        }, threadId)
+        this.emit(
+          'message',
+          {
+            text: message.text || '',
+          },
+          threadId
+        )
       }
     })
 

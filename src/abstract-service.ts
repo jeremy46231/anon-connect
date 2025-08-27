@@ -6,7 +6,7 @@ export type Message = {
 
 type ServiceEvents = {
   message: (content: Message, thread: string) => void
-  newThread: (thread: string) => void
+  newThread: (thread: string, userId?: string) => void
 }
 
 export abstract class AbstractService<

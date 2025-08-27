@@ -35,27 +35,29 @@ async function sendMessage(message: Message, thread: string) {
 }
 
 for (const service of services) {
-  service.on('newThread', async (thread) => {
-    await database.newThread(thread)
+  service.on('newThread', async (thread, userId) => {
+    await database.newThread(thread, userId)
 
     const result = await database.tryConnect(thread)
     if (result !== null) {
+      // mark chat as active on connect
+      database.touchChat(thread)
       await service.sendMessage(
         {
-          text: `Connected! You can start chatting with the other user now.`,
+          text: `Connected!\nSend STOP to close the chat.`,
         },
         thread
       )
       await sendMessage(
         {
-          text: `Connected! You can start chatting with the other user now.`,
+          text: `Connected!`,
         },
         result
       )
     } else {
       await service.sendMessage(
         {
-          text: `Waiting for another user to connect...`,
+          text: `Waiting for another user to connect...\nSend STOP to close the chat.`,
         },
         thread
       )
@@ -63,16 +65,70 @@ for (const service of services) {
   })
 
   service.on('message', async (content, thread) => {
-    const otherThread = await database.getOtherThread(thread)
-    if (otherThread !== null) {
-      await sendMessage(content, otherThread)
-      return
+    try {
+      // Handle STOP to close the chat
+      if (content.text && content.text.trim() === 'STOP') {
+        const otherThread = await database.closeChat(thread)
+        // Notify both sides
+        if (otherThread) {
+          await service.sendMessage({ text: 'Chat closed.' }, thread)
+          await sendMessage(
+            { text: 'The other user has closed the chat.' },
+            otherThread
+          )
+        } else {
+          await service.sendMessage({ text: 'Search cancelled.' }, thread)
+        }
+        return
+      }
+      const threadInfo = await database.getThread(thread)
+      if (!threadInfo) {
+        await service.sendMessage(
+          {
+            text: `Thread not found in the database. Please start a new chat.`,
+          },
+          thread
+        )
+        return
+      }
+
+      if (threadInfo.status === 'connected') {
+        const otherThread = await database.getOtherThread(thread)
+        if (otherThread !== null) {
+          // forward message to the other person
+          await sendMessage(content, otherThread)
+          database.touchChat(thread)
+          database.touchChat(otherThread)
+        }
+        return
+      }
+      if (threadInfo.status === 'connecting') {
+        await service.sendMessage(
+          {
+            text: `No one is connected to this chat. Please wait for another user to connect.`,
+          },
+          thread
+        )
+        return
+      }
+      if (threadInfo.status === 'closed') {
+        await service.sendMessage(
+          {
+            text: `This chat is closed. Please start a new chat.`,
+          },
+          thread
+        )
+        return
+      }
+      throw new Error('Unknown status')
+    } catch (error) {
+      console.error(error)
+      await service.sendMessage(
+        {
+          text: `An error occurred while processing your message.`,
+        },
+        thread
+      )
     }
-    await service.sendMessage(
-      {
-        text: `No one is connected to this chat. Please wait for another user to connect.`,
-      },
-      thread
-    )
   })
 }

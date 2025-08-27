@@ -33,6 +33,7 @@ export type ChatResponse =
   | CRContactUpdated
   | CRContactsMerged
   | CRContactDeleted
+  | CRContactDeletedByContact
   | CRChatCleared
   | CRUserContactLinkCreated
   | CRUserContactLinkDeleted
@@ -133,6 +134,7 @@ type ChatResponseTag =
   | "contactUpdated"
   | "contactsMerged"
   | "contactDeleted"
+  | "contactDeletedByContact"
   | "chatCleared"
   | "receivedContactRequest"
   | "acceptingContactRequest"
@@ -430,6 +432,12 @@ export interface CRContactsMerged extends CR {
 
 export interface CRContactDeleted extends CR {
   type: "contactDeleted"
+  user: User
+  contact: Contact
+}
+
+export interface CRContactDeletedByContact extends CR {
+  type: "contactDeletedByContact"
   user: User
   contact: Contact
 }

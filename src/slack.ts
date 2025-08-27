@@ -68,11 +68,15 @@ export class SlackBot extends AbstractService {
         `${this.name} cannot send to thread of service ${service}`
       )
     }
-    await this.app.client.chat.postMessage({
-      channel,
-      thread_ts,
-      text: content.text,
-    })
+    try {
+      await this.app.client.chat.postMessage({
+        channel,
+        thread_ts,
+        text: content.text,
+      })
+    } catch (err) {
+      console.error('Slack: failed to post message:', err, 'thread:', thread)
+    }
   }
 
   async setStatus(thread: string, status: string) {
@@ -83,21 +87,30 @@ export class SlackBot extends AbstractService {
       )
     }
     // remove existing reactions
-    const reactionsResponse = await this.app.client.reactions.get({
-      channel,
-      timestamp: thread_ts,
-    })
-    const reactions =
-      reactionsResponse.message?.reactions
-        ?.filter((r) => r.users?.includes(this.botId!))
-        .map((r) => r.name)
-        .filter((name) => name !== undefined) || []
-    for (const reaction of reactions) {
-      await this.app.client.reactions.remove({
+    let reactions: string[] = []
+    try {
+      const reactionsResponse = await this.app.client.reactions.get({
         channel,
         timestamp: thread_ts,
-        name: reaction,
       })
+      reactions =
+        reactionsResponse.message?.reactions
+          ?.filter((r) => r.users?.includes(this.botId!))
+          .map((r) => r.name)
+          .filter((name) => name !== undefined) || []
+    } catch (err) {
+      console.error('Slack: failed to fetch reactions:', err)
+    }
+    for (const reaction of reactions) {
+      try {
+        await this.app.client.reactions.remove({
+          channel,
+          timestamp: thread_ts,
+          name: reaction,
+        })
+      } catch (err) {
+        console.error('Slack: failed to remove reaction:', reaction, err)
+      }
     }
 
     const statusEmojis: Record<string, string | undefined> = {
@@ -108,10 +121,14 @@ export class SlackBot extends AbstractService {
     const statusEmoji = statusEmojis[status]
     if (!statusEmoji) return
 
-    await this.app.client.reactions.add({
-      channel,
-      timestamp: thread_ts,
-      name: statusEmoji,
-    })
+    try {
+      await this.app.client.reactions.add({
+        channel,
+        timestamp: thread_ts,
+        name: statusEmoji,
+      })
+    } catch (err) {
+      console.error('Slack: failed to add status reaction:', err)
+    }
   }
 }

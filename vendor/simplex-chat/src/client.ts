@@ -17,6 +17,8 @@ export interface Request {
 
 export class ChatCommandError extends Error {
   constructor(public message: string, public response: ChatResponse) {
+    debugger
+    console.error(response)
     super(message)
   }
 }

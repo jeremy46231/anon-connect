@@ -7,6 +7,7 @@ export type Message = {
 type ServiceEvents = {
   message: (content: Message, thread: string) => void
   newThread: (thread: string, userId?: string) => void
+  closeThread: (thread: string) => void
 }
 
 export abstract class AbstractService<
@@ -20,4 +21,5 @@ export abstract class AbstractService<
   abstract sendMessage(content: Message, thread: string): Promise<void>
 
   async setStatus(thread: string, status: string): Promise<void> {}
+  async closeChat(thread: string): Promise<void> {}
 }

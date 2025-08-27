@@ -3,7 +3,6 @@ import { SimpleXBot } from './simplex'
 import Slack from '@slack/bolt'
 import { SlackBot } from './slack'
 import * as database from './database'
-import type { Message } from './abstract-service'
 
 const simpleX = new SimpleXBot(await ChatClient.create('ws://localhost:5225'))
 const slack = new SlackBot(
@@ -34,71 +33,146 @@ function getService(thread: string) {
   return service
 }
 
-for (const service of services) {
-  service.on('newThread', async (thread, userId) => {
-    await database.newThread(thread, userId)
+async function closeChat(thread: string, messageCloser = true) {
+  const service = getService(thread)
+  const otherThread = await database.closeChat(thread)
+  // Notify both sides
+  if (otherThread) {
+    if (messageCloser) {
+      try {
+        await service.sendMessage({ text: 'Chat closed.' }, thread)
+      } catch (err) {
+        console.error('Error sending close message to closer:', err)
+      }
+      try {
+        await service.setStatus(thread, 'closed')
+      } catch (err) {
+        console.error('Error setting status for closer thread:', err)
+      }
+    }
+    const otherService = getService(otherThread)
+    try {
+      await otherService.sendMessage(
+        { text: 'The other user has closed the chat.' },
+        otherThread
+      )
+    } catch (err) {
+      console.error('Error sending close message to other user:', err)
+    }
+    try {
+      await otherService.setStatus(otherThread, 'closed')
+    } catch (err) {
+      console.error('Error setting status for other thread:', err)
+    }
+    try {
+      await otherService.closeChat(otherThread)
+    } catch (err) {
+      console.error('Error closing other thread chat:', err)
+    }
+  } else {
+    try {
+      await service.sendMessage({ text: 'Search cancelled.' }, thread)
+    } catch (err) {
+      console.error('Error sending search cancelled message:', err)
+    }
+    try {
+      await service.setStatus(thread, 'closed')
+    } catch (err) {
+      console.error('Error setting status to closed:', err)
+    }
+  }
+}
 
-    const result = await database.tryConnect(thread)
-    if (result !== null) {
-      // mark chat as active on connect
-      database.touchChat(thread)
-      service.sendMessage(
+async function tryConnect(thread: string) {
+  const service = getService(thread)
+  const result = await database.tryConnect(thread)
+  if (result !== null) {
+    // mark chat as active on connect
+    try {
+      await service.sendMessage(
         {
           text: `Connected!\nSend STOP to close the chat.`,
         },
         thread
       )
-      service.setStatus(thread, 'connected')
+    } catch (err) {
+      console.error('Error sending connected message to first user:', err)
+    }
+    try {
+      await service.setStatus(thread, 'connected')
+    } catch (err) {
+      console.error('Error setting status connected for first user:', err)
+    }
 
-      const resultService = getService(result)
-      resultService.sendMessage(
+    const resultService = getService(result)
+    try {
+      await resultService.sendMessage(
         {
           text: `Connected!`,
         },
         result
       )
-      resultService.setStatus(result, 'connected')
-    } else {
-      service.setStatus(thread, 'connecting')
-      service.sendMessage(
+    } catch (err) {
+      console.error('Error sending connected message to second user:', err)
+    }
+    try {
+      await resultService.setStatus(result, 'connected')
+    } catch (err) {
+      console.error('Error setting status connected for second user:', err)
+    }
+  } else {
+    try {
+      await service.setStatus(thread, 'connecting')
+    } catch (err) {
+      console.error('Error setting status connecting:', err)
+    }
+    try {
+      await service.sendMessage(
         {
           text: `Waiting for another user to connect...\nSend STOP to close the chat.`,
         },
         thread
       )
+    } catch (err) {
+      console.error('Error sending waiting message:', err)
     }
+  }
+}
+
+for (const service of services) {
+  service.on('newThread', async (thread, userId) => {
+    try {
+      await database.newThread(thread, userId)
+    } catch (err) {
+      console.error('DB error creating new thread:', err)
+    }
+    await tryConnect(thread)
   })
 
   service.on('message', async (content, thread) => {
     try {
       // Handle STOP to close the chat
       if (content.text && content.text.trim() === 'STOP') {
-        const otherThread = await database.closeChat(thread)
-        // Notify both sides
-        if (otherThread) {
-          service.sendMessage({ text: 'Chat closed.' }, thread)
-          service.setStatus(thread, 'closed')
-          const otherService = getService(otherThread)
-          otherService.sendMessage(
-            { text: 'The other user has closed the chat.' },
-            otherThread
-          )
-          otherService.setStatus(otherThread, 'closed')
-        } else {
-          service.sendMessage({ text: 'Search cancelled.' }, thread)
-          service.setStatus(thread, 'closed')
-        }
+        await closeChat(thread)
         return
       }
       const threadInfo = await database.getThread(thread)
       if (!threadInfo) {
-        service.sendMessage(
-          {
-            text: `Thread not found in the database. Please start a new chat.`,
-          },
-          thread
-        )
-        service.setStatus(thread, 'closed')
+        try {
+          await service.sendMessage(
+            {
+              text: `Thread not found in the database. Please start a new chat.`,
+            },
+            thread
+          )
+        } catch (err) {
+          console.error('Error notifying user of missing thread:', err)
+        }
+        try {
+          await service.setStatus(thread, 'closed')
+        } catch (err) {
+          console.error('Error setting closed status for missing thread:', err)
+        }
         return
       }
 
@@ -107,39 +181,71 @@ for (const service of services) {
         if (otherThread !== null) {
           // forward message to the other person
           const otherService = getService(otherThread)
-          otherService.sendMessage(content, otherThread)
-          database.touchChat(thread)
-          database.touchChat(otherThread)
+          try {
+            await otherService.sendMessage(content, otherThread)
+          } catch (err) {
+            console.error('Error forwarding message to other thread:', err)
+          }
+          try {
+            await database.touchChat(thread)
+          } catch (err) {
+            console.error('DB error touching chat (thread):', err)
+          }
+          try {
+            await database.touchChat(otherThread)
+          } catch (err) {
+            console.error('DB error touching chat (otherThread):', err)
+          }
         }
         return
       }
       if (threadInfo.status === 'connecting') {
-        await service.sendMessage(
-          {
-            text: `No one is connected to this chat. Please wait for another user to connect.`,
-          },
-          thread
-        )
+        try {
+          await service.sendMessage(
+            {
+              text: `No one is connected to this chat. Please wait for another user to connect.`,
+            },
+            thread
+          )
+        } catch (err) {
+          console.error('Error notifying user they are connecting:', err)
+        }
         return
       }
       if (threadInfo.status === 'closed') {
-        await service.sendMessage(
-          {
-            text: `This chat is closed. Please start a new chat.`,
-          },
-          thread
-        )
+        try {
+          await service.sendMessage(
+            {
+              text: `This chat is closed. Please start a new chat.`,
+            },
+            thread
+          )
+        } catch (err) {
+          console.error('Error notifying user the chat is closed:', err)
+        }
         return
       }
       throw new Error('Unknown status')
     } catch (error) {
       console.error(error)
-      await service.sendMessage(
-        {
-          text: `An error occurred while processing your message.`,
-        },
-        thread
-      )
+      try {
+        await service.sendMessage(
+          {
+            text: `An error occurred while processing your message.`,
+          },
+          thread
+        )
+      } catch (err) {
+        console.error('Error notifying user of processing error:', err)
+      }
+    }
+  })
+
+  service.on('closeThread', async (thread) => {
+    try {
+      await closeChat(thread)
+    } catch (error) {
+      console.error(error)
     }
   })
 }

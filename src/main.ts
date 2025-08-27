@@ -25,13 +25,13 @@ if (!simpleXAddress) {
 
 // Main bot loop
 
-async function sendMessage(message: Message, thread: string) {
+function getService(thread: string) {
   const serviceName = thread.split('|')[0]
   const service = services.find((s) => s.name === serviceName)
   if (!service) {
     throw new Error(`Service not found: ${serviceName}`)
   }
-  return await service.sendMessage(message, thread)
+  return service
 }
 
 for (const service of services) {
@@ -42,20 +42,25 @@ for (const service of services) {
     if (result !== null) {
       // mark chat as active on connect
       database.touchChat(thread)
-      await service.sendMessage(
+      service.sendMessage(
         {
           text: `Connected!\nSend STOP to close the chat.`,
         },
         thread
       )
-      await sendMessage(
+      service.setStatus(thread, 'connected')
+
+      const resultService = getService(result)
+      resultService.sendMessage(
         {
           text: `Connected!`,
         },
         result
       )
+      resultService.setStatus(result, 'connected')
     } else {
-      await service.sendMessage(
+      service.setStatus(thread, 'connecting')
+      service.sendMessage(
         {
           text: `Waiting for another user to connect...\nSend STOP to close the chat.`,
         },
@@ -71,24 +76,29 @@ for (const service of services) {
         const otherThread = await database.closeChat(thread)
         // Notify both sides
         if (otherThread) {
-          await service.sendMessage({ text: 'Chat closed.' }, thread)
-          await sendMessage(
+          service.sendMessage({ text: 'Chat closed.' }, thread)
+          service.setStatus(thread, 'closed')
+          const otherService = getService(otherThread)
+          otherService.sendMessage(
             { text: 'The other user has closed the chat.' },
             otherThread
           )
+          otherService.setStatus(otherThread, 'closed')
         } else {
-          await service.sendMessage({ text: 'Search cancelled.' }, thread)
+          service.sendMessage({ text: 'Search cancelled.' }, thread)
+          service.setStatus(thread, 'closed')
         }
         return
       }
       const threadInfo = await database.getThread(thread)
       if (!threadInfo) {
-        await service.sendMessage(
+        service.sendMessage(
           {
             text: `Thread not found in the database. Please start a new chat.`,
           },
           thread
         )
+        service.setStatus(thread, 'closed')
         return
       }
 
@@ -96,7 +106,8 @@ for (const service of services) {
         const otherThread = await database.getOtherThread(thread)
         if (otherThread !== null) {
           // forward message to the other person
-          await sendMessage(content, otherThread)
+          const otherService = getService(otherThread)
+          otherService.sendMessage(content, otherThread)
           database.touchChat(thread)
           database.touchChat(otherThread)
         }

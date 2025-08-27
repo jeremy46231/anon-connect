@@ -18,4 +18,6 @@ export abstract class AbstractService<
   abstract start(): Promise<void>
 
   abstract sendMessage(content: Message, thread: string): Promise<void>
+
+  async setStatus(thread: string, status: string): Promise<void> {}
 }

@@ -2,13 +2,13 @@
 
 Anonymously chat with random people!
 
-Send a DM to [@AnonChat][anonchat] on [Slack][slack], or, for provable anonymity
-(you don't have to trust me), [send the bot a DM][simplex-dm] on
-[SimpleX][simplex].
+Send a DM to [@AnonChat][slack-bot] on [Slack][slack], or, for provable
+anonymity (you don't have to trust me), [send the bot a
+message][simplex-address] on [SimpleX][simplex].
 
-[anonchat]: https://hackclub.slack.com/team/U09C3KYP07N
+[slack-bot]: https://hackclub.slack.com/team/U09C3KYP07N
 [slack]: https://hackclub.com/slack
-[simplex-dm]:
+[simplex-address]:
   https://smp5.simplex.im/a#hbD_dWPQ5wj2z7K64JvtPPPkG4gcOycn6Q-kTp0MuvE
 [simplex]: https://simplex.chat
 

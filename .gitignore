@@ -5,3 +5,8 @@ tmp*
 repomix-output.xml
 
 simplex/
+
+# prisma
+dev.db
+*.db
+*.sqlite

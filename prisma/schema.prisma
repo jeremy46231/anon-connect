@@ -1,0 +1,38 @@
+// file: prisma/schema.prisma
+
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db" // This points to the local database file
+}
+
+model Thread {
+  // The unique identifier from your services, e.g., "Slack|C123|T123"
+  id     String @id
+  // The current state of the thread
+  status String // "connecting", "connected", or "closed"
+
+  // A thread can be part of one chat as thread1 OR thread2
+  chatAsThread1 Chat? @relation("ChatToThread1")
+  chatAsThread2 Chat? @relation("ChatToThread2")
+}
+
+model Chat {
+  id Int @id @default(autoincrement())
+
+  // --- This creates the explicit relationship ---
+
+  // Relation to the first thread
+  thread1   Thread @relation("ChatToThread1", fields: [thread1Id], references: [id])
+  thread1Id String @unique // The foreign key, must be unique
+
+  // Relation to the second thread
+  thread2   Thread @relation("ChatToThread2", fields: [thread2Id], references: [id])
+  thread2Id String @unique // The foreign key, must be unique
+}

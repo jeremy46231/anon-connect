@@ -36,24 +36,24 @@ async function sendMessage(message: Message, thread: string) {
 
 for (const service of services) {
   service.on('newThread', async (thread) => {
-    database.newThread(thread)
+    await database.newThread(thread)
 
-    const result = database.tryConnect(thread)
+    const result = await database.tryConnect(thread)
     if (result !== null) {
-      service.sendMessage(
+      await service.sendMessage(
         {
           text: `Connected! You can start chatting with the other user now.`,
         },
         thread
       )
-      sendMessage(
+      await sendMessage(
         {
           text: `Connected! You can start chatting with the other user now.`,
         },
         result
       )
     } else {
-      service.sendMessage(
+      await service.sendMessage(
         {
           text: `Waiting for another user to connect...`,
         },
@@ -63,12 +63,12 @@ for (const service of services) {
   })
 
   service.on('message', async (content, thread) => {
-    const otherThread = database.getOtherThread(thread)
+    const otherThread = await database.getOtherThread(thread)
     if (otherThread !== null) {
       await sendMessage(content, otherThread)
       return
     }
-    service.sendMessage(
+    await service.sendMessage(
       {
         text: `No one is connected to this chat. Please wait for another user to connect.`,
       },

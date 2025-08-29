@@ -343,6 +343,7 @@ export interface APIDeleteChat extends IChatCommand {
   type: "apiDeleteChat"
   chatType: ChatType
   chatId: number
+  chatDeleteMode: ChatDeleteMode
 }
 
 export interface APIClearChat extends IChatCommand {
@@ -673,6 +674,9 @@ export enum DeleteMode {
   Internal = "internal",
 }
 
+// ChatDeleteMode for deleting a chat: full|entity|messages [notify=off]
+export type ChatDeleteMode = {type: "full"; notify: boolean} | {type: "entity"; notify: boolean} | {type: "messages"}
+
 interface ArchiveConfig {
   archivePath: string
   disableCompression?: boolean
@@ -787,7 +791,7 @@ export function cmdString(cmd: ChatCommand): string {
       return `/_read chat ${cmd.chatType}${cmd.chatId}${itemRange}`
     }
     case "apiDeleteChat":
-      return `/_delete ${cmd.chatType}${cmd.chatId}`
+      return `/_delete ${cmd.chatType}${cmd.chatId} ${chatDeleteModeStr(cmd.chatDeleteMode)}`
     case "apiClearChat":
       return `/_clear chat ${cmd.chatType}${cmd.chatId}`
     case "apiAcceptContact":
@@ -896,4 +900,10 @@ function autoAcceptStr(autoAccept: AutoAccept | undefined): string {
   if (!autoAccept) return "off"
   const msg = autoAccept.autoReply
   return "on" + (autoAccept.acceptIncognito ? " incognito=on" : "") + (msg ? " json " + JSON.stringify(msg) : "")
+}
+
+// Convert ChatDeleteMode to string per TYPES.md: "full|entity|messages[ notify=off]"
+function chatDeleteModeStr(m: ChatDeleteMode): string {
+  if (m.type === "messages") return "messages"
+  return `${m.type}${m.notify ? "" : " notify=off"}`
 }

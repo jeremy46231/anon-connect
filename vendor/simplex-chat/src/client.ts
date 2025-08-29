@@ -239,8 +239,13 @@ export class ChatClient {
     }
   }
 
-  async apiDeleteChat(chatType: ChatType, chatId: number): Promise<void> {
-    const r = await this.sendChatCommand({type: "apiDeleteChat", chatType, chatId})
+  async apiDeleteChat(
+    chatType: ChatType,
+    chatId: number,
+    chatDeleteMode: CC.ChatDeleteMode = {type: "entity", notify: true}
+  ): Promise<void> {
+    const r = await this.sendChatCommand({type: "apiDeleteChat", chatType, chatId, chatDeleteMode})
+    if (chatDeleteMode.type === "messages" && r.type === "chatCleared") return
     switch (chatType) {
       case ChatType.Direct:
         if (r.type === "contactDeleted") return

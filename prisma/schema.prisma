@@ -38,4 +38,9 @@ model Chat {
 
   // Timestamp of the last message activity between the two threads
   lastActive DateTime @default(now())
+
+  // Hidden feature: uwu mode state
+  uwuMode           Boolean @default(false)
+  uwuOptInThread1   Boolean @default(false)
+  uwuOptInThread2   Boolean @default(false)
 }

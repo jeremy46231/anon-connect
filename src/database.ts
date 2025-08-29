@@ -122,6 +122,58 @@ export async function getOtherThread(threadId: string) {
   return chat.thread1Id === threadId ? chat.thread2Id : chat.thread1Id
 }
 
+export async function getChat(threadId: string) {
+  return prisma.chat.findFirst({
+    where: { OR: [{ thread1Id: threadId }, { thread2Id: threadId }] },
+  })
+}
+
+export async function markUwuOptIn(threadId: string) {
+  const chat = await prisma.chat.findFirst({
+    where: { OR: [{ thread1Id: threadId }, { thread2Id: threadId }] },
+  })
+  if (!chat) return false
+
+  const isThread1 = chat.thread1Id === threadId
+  const updated = await prisma.chat.update({
+    where: { id: chat.id },
+    data: isThread1 ? { uwuOptInThread1: true } : { uwuOptInThread2: true },
+  })
+  return (updated.uwuOptInThread1 && updated.uwuOptInThread2) || false
+}
+
+export async function isUwuModeActive(threadId: string) {
+  const chat = await prisma.chat.findFirst({
+    where: { OR: [{ thread1Id: threadId }, { thread2Id: threadId }] },
+    select: { uwuMode: true },
+  })
+  return chat?.uwuMode ?? false
+}
+
+export async function enableUwuModeForChat(threadId: string) {
+  const chat = await prisma.chat.findFirst({
+    where: { OR: [{ thread1Id: threadId }, { thread2Id: threadId }] },
+  })
+  if (!chat) return false
+  await prisma.chat.update({
+    where: { id: chat.id },
+    data: { uwuMode: true },
+  })
+  return true
+}
+
+export async function disableUwuModeForChat(threadId: string) {
+  const chat = await prisma.chat.findFirst({
+    where: { OR: [{ thread1Id: threadId }, { thread2Id: threadId }] },
+  })
+  if (!chat) return false
+  await prisma.chat.update({
+    where: { id: chat.id },
+    data: { uwuMode: false, uwuOptInThread1: false, uwuOptInThread2: false },
+  })
+  return true
+}
+
 /**
  * Close the chat for the given thread id.
  * - If a chat exists, both threads are marked as 'closed' and the chat record is deleted.

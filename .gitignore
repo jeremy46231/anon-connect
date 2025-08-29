@@ -2,7 +2,7 @@ node_modules
 .DS_Store
 tmp*
 .env
-repomix-output.xml
+repomix-output.*
 
 simplex/
 

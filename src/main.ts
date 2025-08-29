@@ -3,6 +3,7 @@ import { SimpleXBot } from './simplex'
 import Slack from '@slack/bolt'
 import { SlackBot } from './slack'
 import * as database from './database'
+import { uwuwify } from './helpers'
 
 const simpleX = new SimpleXBot(await ChatClient.create('ws://localhost:5225'))
 const slack = new SlackBot(
@@ -40,7 +41,7 @@ async function closeChat(thread: string, messageCloser = true) {
   if (otherThread) {
     if (messageCloser) {
       try {
-        await service.sendMessage({ text: 'Chat closed.' }, thread)
+        await service.sendMessage({ text: '*Chat closed.*' }, thread)
       } catch (err) {
         console.error('Error sending close message to closer:', err)
       }
@@ -53,7 +54,7 @@ async function closeChat(thread: string, messageCloser = true) {
     const otherService = getService(otherThread)
     try {
       await otherService.sendMessage(
-        { text: 'The other user has closed the chat.' },
+        { text: '*The other user has closed the chat.*' },
         otherThread
       )
     } catch (err) {
@@ -71,7 +72,7 @@ async function closeChat(thread: string, messageCloser = true) {
     }
   } else {
     try {
-      await service.sendMessage({ text: 'Search cancelled.' }, thread)
+      await service.sendMessage({ text: '*Search cancelled.*' }, thread)
     } catch (err) {
       console.error('Error sending search cancelled message:', err)
     }
@@ -84,58 +85,62 @@ async function closeChat(thread: string, messageCloser = true) {
 }
 
 async function tryConnect(thread: string) {
-  const service = getService(thread)
-  const result = await database.tryConnect(thread)
-  if (result !== null) {
-    // mark chat as active on connect
-    try {
-      await service.sendMessage(
-        {
-          text: `Connected!\nSend STOP to close the chat.`,
-        },
-        thread
-      )
-    } catch (err) {
-      console.error('Error sending connected message to first user:', err)
-    }
-    try {
-      await service.setStatus(thread, 'connected')
-    } catch (err) {
-      console.error('Error setting status connected for first user:', err)
-    }
+  try {
+    const service = getService(thread)
+    const result = await database.tryConnect(thread)
+    if (result !== null) {
+      // mark chat as active on connect
+      try {
+        await service.sendMessage(
+          {
+            text: '*Connected!*\n*Send STOP to close the chat.*',
+          },
+          thread
+        )
+      } catch (err) {
+        console.error('Error sending connected message to first user:', err)
+      }
+      try {
+        await service.setStatus(thread, 'connected')
+      } catch (err) {
+        console.error('Error setting status connected for first user:', err)
+      }
 
-    const resultService = getService(result)
-    try {
-      await resultService.sendMessage(
-        {
-          text: `Connected!`,
-        },
-        result
-      )
-    } catch (err) {
-      console.error('Error sending connected message to second user:', err)
+      const resultService = getService(result)
+      try {
+        await resultService.sendMessage(
+          {
+            text: '*Connected!*',
+          },
+          result
+        )
+      } catch (err) {
+        console.error('Error sending connected message to second user:', err)
+      }
+      try {
+        await resultService.setStatus(result, 'connected')
+      } catch (err) {
+        console.error('Error setting status connected for second user:', err)
+      }
+    } else {
+      try {
+        await service.setStatus(thread, 'connecting')
+      } catch (err) {
+        console.error('Error setting status connecting:', err)
+      }
+      try {
+        await service.sendMessage(
+          {
+            text: '*Waiting for another user to connect...*\n*Send STOP to close the chat.*',
+          },
+          thread
+        )
+      } catch (err) {
+        console.error('Error sending waiting message:', err)
+      }
     }
-    try {
-      await resultService.setStatus(result, 'connected')
-    } catch (err) {
-      console.error('Error setting status connected for second user:', err)
-    }
-  } else {
-    try {
-      await service.setStatus(thread, 'connecting')
-    } catch (err) {
-      console.error('Error setting status connecting:', err)
-    }
-    try {
-      await service.sendMessage(
-        {
-          text: `Waiting for another user to connect...\nSend STOP to close the chat.`,
-        },
-        thread
-      )
-    } catch (err) {
-      console.error('Error sending waiting message:', err)
-    }
+  } catch (err) {
+    console.error('Error trying to connect:', err)
   }
 }
 
@@ -156,12 +161,37 @@ for (const service of services) {
         await closeChat(thread)
         return
       }
+      // Handle DISABLE to turn off UwU mode if active
+      if (content.text && content.text.trim() === 'DISABLE') {
+        const wasActive = await database.isUwuModeActive(thread)
+        if (wasActive) {
+          await database.disableUwuModeForChat(thread)
+          const otherThread = await database.getOtherThread(thread)
+          const otherService = otherThread ? getService(otherThread) : null
+          try {
+            await service.sendMessage({ text: '*UwU mode disabled.*' }, thread)
+          } catch (err) {
+            console.error('Error notifying disabler:', err)
+          }
+          if (otherThread && otherService) {
+            try {
+              await otherService.sendMessage(
+                { text: '*The other user has disabled UwU mode.*' },
+                otherThread
+              )
+            } catch (err) {
+              console.error('Error notifying other user of disable:', err)
+            }
+          }
+        }
+        return
+      }
       const threadInfo = await database.getThread(thread)
       if (!threadInfo) {
         try {
           await service.sendMessage(
             {
-              text: `Thread not found in the database. Please start a new chat.`,
+              text: '*Thread not found in the database. Please start a new chat.*',
             },
             thread
           )
@@ -178,32 +208,67 @@ for (const service of services) {
 
       if (threadInfo.status === 'connected') {
         const otherThread = await database.getOtherThread(thread)
-        if (otherThread !== null) {
-          // forward message to the other person
-          const otherService = getService(otherThread)
-          try {
-            await otherService.sendMessage(content, otherThread)
-          } catch (err) {
-            console.error('Error forwarding message to other thread:', err)
-          }
-          try {
-            await database.touchChat(thread)
-          } catch (err) {
-            console.error('DB error touching chat (thread):', err)
-          }
-          try {
-            await database.touchChat(otherThread)
-          } catch (err) {
-            console.error('DB error touching chat (otherThread):', err)
+        if (otherThread === null) {
+          // no other thread connected
+          throw new Error('No other thread connected')
+        }
+        // forward message to the other person
+        const otherService = getService(otherThread)
+        try {
+          const active = await database.isUwuModeActive(thread)
+          const msg = active ? { text: uwuwify(content.text) } : content
+          await otherService.sendMessage(msg, otherThread)
+        } catch (err) {
+          console.error('Error forwarding message to other thread:', err)
+        }
+        try {
+          await database.touchChat(thread)
+        } catch (err) {
+          console.error('DB error touching chat (thread):', err)
+        }
+        try {
+          await database.touchChat(otherThread)
+        } catch (err) {
+          console.error('DB error touching chat (otherThread):', err)
+        }
+
+        // Hidden trigger: mark uwu opt-in on trigger phrases
+        if (/(uwu|owo|rawr|>w<)/i.test(content.text || '')) {
+          const bothOpted = await database.markUwuOptIn(thread)
+          if (bothOpted && !(await database.isUwuModeActive(thread))) {
+            await database.enableUwuModeForChat(thread)
+            const otherThread = await database.getOtherThread(thread)
+            const otherService = otherThread ? getService(otherThread) : null
+            try {
+              await service.sendMessage(
+                {
+                  text: '*UwU mode enabled! Send DISABLE to disable.*',
+                },
+                thread
+              )
+            } catch (err) {
+              console.error('Error notifying enabler:', err)
+            }
+            if (otherThread && otherService) {
+              try {
+                await otherService.sendMessage(
+                  { text: '*UwU mode enabled! Send DISABLE to disable.*' },
+                  otherThread
+                )
+              } catch (err) {
+                console.error('Error notifying other user of enable:', err)
+              }
+            }
           }
         }
+
         return
       }
       if (threadInfo.status === 'connecting') {
         try {
           await service.sendMessage(
             {
-              text: `No one is connected to this chat. Please wait for another user to connect.`,
+              text: '*No one is connected to this chat. Please wait for another user to connect.*',
             },
             thread
           )
@@ -216,7 +281,7 @@ for (const service of services) {
         try {
           await service.sendMessage(
             {
-              text: `This chat is closed. Please start a new chat.`,
+              text: '*This chat is closed. Please start a new chat.*',
             },
             thread
           )
@@ -231,7 +296,7 @@ for (const service of services) {
       try {
         await service.sendMessage(
           {
-            text: `An error occurred while processing your message.`,
+            text: '*An error occurred while processing your message.*',
           },
           thread
         )
@@ -243,7 +308,7 @@ for (const service of services) {
 
   service.on('closeThread', async (thread) => {
     try {
-      await closeChat(thread)
+      await closeChat(thread, false)
     } catch (error) {
       console.error(error)
     }

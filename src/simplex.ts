@@ -58,25 +58,20 @@ export class SimpleXBot extends AbstractService {
             console.error('SimpleX: failed to send welcome messages:', err)
           }
 
-          try {
-            await this.chat.apiSetContactPrefs(contactId, {
-              commands: [
-                {
-                  type: 'command',
-                  keyword: 'connect',
-                  label: 'Create a new chat',
-                },
-              ],
-            })
-          } catch (err) {
-            console.error('SimpleX: failed to set contact prefs:', err)
-          }
+          // try {
+          //   await this.chat.apiSetContactPrefs(contactId, {
+          //     commands: [
+          //       {
+          //         type: 'command',
+          //         keyword: 'connect',
+          //         label: 'Create a new chat',
+          //       },
+          //     ],
+          //   })
+          // } catch (err) {
+          //   console.error('SimpleX: failed to set contact prefs:', err)
+          // }
         } else {
-          // await this.chat.apiSendTextMessage(
-          //   ChatType.Direct,
-          //   contactId,
-          //   'New chat created.'
-          // )
           const threadId = `${this.name}|${contactId.toFixed()}`
           // const userId = couldBeIncognito(response.contact.profile)
           //   ? undefined
@@ -222,7 +217,10 @@ export class SimpleXBot extends AbstractService {
         )
       }
       try {
-        await this.chat.apiDeleteChat(ChatType.Direct, parseInt(id, 10))
+        await this.chat.apiDeleteChat(ChatType.Direct, parseInt(id, 10), {
+          type: 'entity',
+          notify: true,
+        })
       } catch (err) {
         console.error('SimpleX: failed to delete chat:', err, 'thread:', thread)
       }

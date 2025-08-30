@@ -1,7 +1,8 @@
 {
   "name": "anon-connect",
   "scripts": {
-    "simplex": "simplex-chat -d ./simplex/database/db -p 5225 -y --create-bot-display-name AnonConnect"
+    "simplex": "simplex-chat -d ./simplex/database/db -p 5225 -y --create-bot-display-name AnonConnect",
+    "start": "bun run src/main.ts"
   },
   "dependencies": {
     "@prisma/client": "",

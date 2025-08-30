@@ -1,0 +1,15 @@
+[Unit]
+Description=AnonConnect bot (bun)
+After=anonconnect-simplex.service
+Requires=anonconnect-simplex.service
+
+[Service]
+Type=simple
+WorkingDirectory=__WORKDIR__
+ExecStart=__BUN__ run start
+User=__USER__
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

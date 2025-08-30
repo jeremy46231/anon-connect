@@ -1,0 +1,13 @@
+[Unit]
+Description=AnonConnect SimpleX server
+
+[Service]
+Type=simple
+WorkingDirectory=__WORKDIR__
+ExecStart=__SIMPLEX__ -d ./simplex/database/db -p 5225 -y --create-bot-display-name AnonConnect
+User=__USER__
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

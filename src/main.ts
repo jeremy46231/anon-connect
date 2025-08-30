@@ -233,7 +233,7 @@ for (const service of services) {
         }
 
         // Hidden trigger: mark uwu opt-in on trigger phrases
-        if (/(uwu|owo|rawr|>w<)/i.test(content.text || '')) {
+        if (/(uwu|owo|rawr|>w<|meow|mrrp|wrrf)/i.test(content.text || '')) {
           const bothOpted = await database.markUwuOptIn(thread)
           if (bothOpted && !(await database.isUwuModeActive(thread))) {
             await database.enableUwuModeForChat(thread)

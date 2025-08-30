@@ -5,9 +5,10 @@
   },
   "dependencies": {
     "@prisma/client": "",
+    "@simplex-chat/types": "^0.1.0",
     "@slack/bolt": "^4.4.0",
     "@types/bun": "^1.2.20",
-    "simplex-chat": "./vendor/simplex-chat/",
+    "simplex-chat": "^0.3.0",
     "uwuifier": "^4.2.2"
   },
   "devDependencies": {

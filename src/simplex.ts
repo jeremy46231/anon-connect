@@ -1,15 +1,17 @@
 import {
   ChatClient,
-  ChatType,
-  Profile,
-  ChatInfoType,
-  ChatResponse,
-  ciContentText,
-  User,
+  // ChatType,
+  // Profile,
+  // ChatInfoType,
+  // ChatResponse,
+  // ciContentText,
+  // User,
 } from 'simplex-chat'
 import { AbstractService, type Message } from './abstract-service'
+import { T as SimplexTypes, ChatEvent } from '@simplex-chat/types'
+import { apiContactInfo, apiCreateLink } from './helpers'
 
-function couldBeIncognito(profile: Profile) {
+function couldBeIncognito(profile: SimplexTypes.Profile) {
   if (profile.contactLink) return false
   if (profile.fullName !== '') return false
   if (profile.image) return false
@@ -24,12 +26,12 @@ export class SimpleXBot extends AbstractService {
   constructor(private chat: ChatClient) {
     super()
   }
-  private botUser?: User
+  private botUser?: SimplexTypes.User
   address?: string
 
   // thread id = `${this.name}|${contactId.toFixed()}`
 
-  private async handleChatResponse(response: ChatResponse) {
+  private async handleChatEvent(response: ChatEvent) {
     switch (response.type) {
       case 'contactConnected': {
         const isThread = response.userCustomProfile !== undefined
@@ -50,9 +52,12 @@ export class SimpleXBot extends AbstractService {
 
           try {
             await this.chat.apiSendMessages(
-              ChatType.Direct,
+              SimplexTypes.ChatType.Direct,
               contactId,
-              messages.map((text) => ({ msgContent: { type: 'text', text } }))
+              messages.map((text) => ({
+                msgContent: { type: 'text', text },
+                mentions: {},
+              }))
             )
           } catch (err) {
             console.error('SimpleX: failed to send welcome messages:', err)
@@ -88,34 +93,28 @@ export class SimpleXBot extends AbstractService {
       case 'newChatItems': {
         for (const { chatInfo, chatItem } of response.chatItems) {
           try {
-            if (chatInfo.type !== ChatInfoType.Direct) continue
+            if (chatInfo.type !== 'direct') continue
             if (chatItem.content.type !== 'rcvMsgContent') continue
 
+            console.log(chatInfo)
             const contactId = chatInfo.contact.contactId
-            let isThread = false
-            try {
-              const [, customProfile] = await this.chat.apiContactInfo(
-                contactId
-              )
-              isThread = customProfile !== undefined
-            } catch (err) {
-              console.error('SimpleX: failed to get contact info:', err)
-              isThread = false
-            }
+            const contactInfo = await apiContactInfo(this.chat, contactId)
+            const isThread = contactInfo.customUserProfile !== undefined
 
             if (!isThread) {
-              const msg = ciContentText(chatItem.content)
+              const msg = chatItem.content.msgContent.text ?? ''
 
               try {
                 if (!this.botUser) {
                   throw new Error('no bot user')
                 }
-                const link = await this.chat.apiAddContact(
+                const link = await apiCreateLink(
+                  this.chat,
                   this.botUser.userId,
                   true
                 )
                 await this.chat.apiSendTextMessage(
-                  ChatType.Direct,
+                  SimplexTypes.ChatType.Direct,
                   contactId,
                   `New chat: ${link}`
                 )
@@ -131,7 +130,7 @@ export class SimpleXBot extends AbstractService {
               const threadId = `${this.name}|${contactId.toFixed()}`
               this.emit(
                 'message',
-                { text: ciContentText(chatItem.content) ?? '' },
+                { text: chatItem.content.msgContent.text ?? '' },
                 threadId
               )
             }
@@ -141,7 +140,6 @@ export class SimpleXBot extends AbstractService {
         }
         return
       }
-      case 'contactDeleted':
       case 'contactDeletedByContact': {
         const contactId = response.contact.contactId
         const threadId = `${this.name}|${contactId.toFixed()}`
@@ -165,8 +163,8 @@ export class SimpleXBot extends AbstractService {
     console.log(`SimpleX display name: ${this.botUser.profile.displayName}`)
     try {
       this.address =
-        (await this.chat.apiGetUserAddress()) ||
-        (await this.chat.apiCreateUserAddress())
+        (await this.chat.apiGetUserAddress(userId)) ||
+        (await this.chat.apiCreateUserAddress(userId))
     } catch (err) {
       console.error('SimpleX: failed to get or create user address:', err)
       throw err
@@ -174,7 +172,7 @@ export class SimpleXBot extends AbstractService {
     console.log(`SimpleX address: ${this.address}`)
 
     try {
-      await this.chat.enableAddressAutoAccept(false, {
+      await this.chat.enableAddressAutoAccept(userId, {
         type: 'text',
         text: 'Hello! This is the AnonConnect bot.\nhttps://github.com/jeremy46231/anon-connect\nMade by @Jeremy, jer.app',
       })
@@ -183,7 +181,7 @@ export class SimpleXBot extends AbstractService {
     }
     ;(async () => {
       for await (const response of this.chat.msgQ) {
-        this.handleChatResponse(response).catch((error) => {
+        this.handleChatEvent(response).catch((error) => {
           debugger
           console.error('Error handling chat response:', error)
         })
@@ -200,9 +198,11 @@ export class SimpleXBot extends AbstractService {
       )
     }
     try {
-      await this.chat.apiSendMessages(ChatType.Direct, parseInt(id, 10), [
-        { msgContent: { type: 'text', text: content.text } },
-      ])
+      await this.chat.apiSendTextMessage(
+        SimplexTypes.ChatType.Direct,
+        parseInt(id, 10),
+        content.text
+      )
     } catch (err) {
       console.error('SimpleX: failed to send message:', err, 'thread:', thread)
     }
@@ -217,10 +217,14 @@ export class SimpleXBot extends AbstractService {
         )
       }
       try {
-        await this.chat.apiDeleteChat(ChatType.Direct, parseInt(id, 10), {
-          type: 'entity',
-          notify: true,
-        })
+        await this.chat.apiDeleteChat(
+          SimplexTypes.ChatType.Direct,
+          parseInt(id, 10),
+          {
+            type: 'entity',
+            notify: true,
+          }
+        )
       } catch (err) {
         console.error('SimpleX: failed to delete chat:', err, 'thread:', thread)
       }

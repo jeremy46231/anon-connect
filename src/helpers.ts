@@ -1,4 +1,11 @@
 import Uwuifier from 'uwuifier'
+import {
+  T as SimplexTypes,
+  ChatEvent,
+  CC as SimplexCommands,
+  ChatResponse,
+} from '@simplex-chat/types'
+import type { ChatClient } from 'simplex-chat'
 
 export class TypedEmitter<T extends Record<string, (...args: any[]) => void>> {
   private listeners: Map<keyof T, T[keyof T][]> = new Map()
@@ -59,4 +66,46 @@ export function uwuwify(str: string) {
     text +=
       ' ' + uwuifier.faces[Math.floor(Math.random() * uwuifier.faces.length)]
   return text
+}
+
+/**
+ * ChatClient.apiCreateLink except with an incognito parameter
+ */
+export async function apiCreateLink(
+  chat: ChatClient,
+  userId: number,
+  incognito = false
+): Promise<string> {
+  const r = await chat.sendChatCmd(
+    SimplexCommands.APIAddContact.cmdString({ userId, incognito })
+  )
+  if (r.type === 'invitation') {
+    const link = r.connLinkInvitation
+    return link.connShortLink || link.connFullLink
+  }
+  console.error(r)
+  throw new Error('error creating link')
+}
+
+interface CRContactInfo {
+  type: 'contactInfo'
+  user: SimplexTypes.User
+  contact: SimplexTypes.Contact
+  connectionStats: {
+    rcvServers?: string[]
+    sndServers?: string[]
+  }
+  customUserProfile?: SimplexTypes.Profile
+}
+
+export async function apiContactInfo(
+  chat: ChatClient,
+  contactId: number
+): Promise<CRContactInfo> {
+  const r = (await chat.sendChatCmd(`/_info @${contactId}`)) as
+    | ChatResponse
+    | CRContactInfo
+  if (r.type === 'contactInfo') return r
+  console.error(r)
+  throw new Error('error fetching contact info')
 }
